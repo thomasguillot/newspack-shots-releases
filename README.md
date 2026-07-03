@@ -24,10 +24,11 @@ Upgrading? Just replace the app in Applications — permissions stay granted. Ev
 
 ## What you get
 
-- **⌃⇧1** full screen (with a display picker on multi-monitor setups) · **⌃⇧2** window (hover, ⇥ to cycle stacks, click) · **⌃⇧3** region (free drag with a pixel-precision magnifier)
+- **⌃⇧1** full screen (with a display picker on multi-monitor setups) · **⌃⇧2** window (hover, ⇥ to cycle stacks, click) · **⌃⇧3** region (free drag with a pixel-precision magnifier) · **⌃⇧4** timed 5s capture (for open menus and other transient UI)
 - Instant auto-save to your folder + clipboard, with a quick preview bottom-left — annotate only when you want to (arrows, rectangles, spotlight, numbered counters)
+- **Auto-updates** — the app checks this repo for new versions after launch and installs them in place (toggle in Settings, or **Check for Updates…** in the menu)
 
-Screenshots never leave your Mac — no cloud, no upload, no analytics.
+Screenshots never leave your Mac — no cloud, no upload, no analytics. The update check only talks to this repository's Releases.
 
 ## For AI agents (MCP)
 
