@@ -10,8 +10,8 @@ A native macOS menu-bar screenshot app for the Newspack team. Every capture is a
 
 ## Install
 
-1. Download the latest `Newspack-Shots-<version>.zip` from [Releases](../../releases/latest) and unzip it.
-2. Drag **Newspack Shots** into **Applications**. (If an older copy is running, quit it first from its menu-bar icon.)
+1. Download the latest `Newspack-Shots-<version>.dmg` from [Releases](../../releases/latest).
+2. Open it and drag **Newspack Shots** onto **Applications**. (If an older copy is running, quit it first from its menu-bar icon.)
 3. The app is **unsigned** (no Apple Developer Program), so macOS blocks it on first launch. To allow it:
    - Double-click **Newspack Shots**; when macOS warns it "can't verify the developer," click **Done** (*not* "Move to Trash").
    - Open **System Settings → Privacy & Security**, scroll to the **Security** section.
@@ -31,13 +31,13 @@ Screenshots never leave your Mac — no cloud, no upload, no analytics.
 
 ## For AI agents (MCP)
 
-The app doubles as an MCP server, so agents produce screenshots pixel-identical to yours. After installing the app (and granting Screen Recording — launch it once first), register it with your MCP client. For Claude Code:
+The app doubles as an MCP server, so agents produce screenshots pixel-identical to yours. After installing the app (and granting Screen Recording), just use the menu bar icon → **Set Up AI Agents…** — one click installs the team screenshot skill for Claude Code and registers the MCP server. The app keeps the installed skill up to date automatically.
+
+Using another MCP client? It's a standard stdio server — register it manually:
 
 ```sh
 claude mcp add newspack-shots -- "/Applications/Newspack Shots.app/Contents/MacOS/NewspackShots" --mcp
 ```
-
-(Any MCP client works — it's a standard stdio server; point it at that binary with the `--mcp` flag.)
 
 ### Tools
 
@@ -60,19 +60,18 @@ All tools return the saved file's path; capture/style tools also report the canv
 
 When annotating, prefer arrows and numbered counters; there is deliberately no text type — put words in the surrounding document.
 
-### Install the full agent skill
+### The full agent skill
 
-The app ships with a Claude Code skill containing the complete team
-screenshot guidelines. After installing the app:
+**Set Up AI Agents…** also installs the bundled Claude Code skill with the
+complete team screenshot guidelines — your agent follows the house rules
+automatically whenever you ask it for a Newspack screenshot. Manual
+fallback if you prefer:
 
 ```sh
 mkdir -p ~/.claude/skills/newspack-shots && \
   cp "/Applications/Newspack Shots.app/Contents/Resources/SKILL.md" \
      ~/.claude/skills/newspack-shots/SKILL.md
 ```
-
-Your agent will then follow the house rules automatically whenever you ask
-it for a Newspack screenshot. Re-run the copy after app updates.
 
 ## License
 
