@@ -54,7 +54,8 @@
     font-size: clamp(2.2rem, 5vw, 3.4rem);
     font-weight: 700;
     letter-spacing: -0.025em;
-    margin-top: 24px;
+    margin-top: 8px;
+    line-height: 1.2;
   }
   .tagline {
     font-size: clamp(1.05rem, 2.5vw, 1.3rem);
@@ -174,6 +175,38 @@
   .duo strong { color: var(--neutral-0); }
   .duo .setup { font-size: 0.9rem; color: var(--primary-200); }
 
+  /* The skill, concretely */
+  code {
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+    background: var(--primary-700);
+    border-radius: 5px;
+    padding: 1px 7px;
+    font-size: 0.85em;
+  }
+  .skill {
+    max-width: 44em;
+    margin: 32px auto 16px;
+    background: var(--primary-800);
+    border: 1px solid var(--primary-700);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: left;
+  }
+  .skill-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 12px;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--primary-700);
+  }
+  .skill-head > code { font-size: 0.95rem; font-weight: 600; }
+  .skill-head span { font-size: 0.85rem; color: var(--primary-200); }
+  .tools { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .tools li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+  .tools li span { font-size: 0.9rem; color: var(--primary-100); }
+
   /* Install */
   ol { max-width: 36em; margin: 0 auto; padding: 0; list-style: none; counter-reset: step; }
   ol li {
@@ -232,7 +265,7 @@
     <h1>Newspack Shots</h1>
     <p class="tagline">Every screenshot on brand — whether you take it or your AI&nbsp;agent does.</p>
     <a id="download" class="download" href="https://github.com/thomasguillot/newspack-shots-releases/releases/latest">Download for macOS</a>
-    <p class="requirements">v<span id="version">0.5.1</span> · macOS 26 (Tahoe) or later · Apple Silicon</p>
+    <p class="requirements">v<span id="version">0.6.0</span> · macOS 26 (Tahoe) or later · Apple Silicon</p>
   </header>
 
   <main>
@@ -265,6 +298,14 @@
         <p>Right-click → Open With on an existing screenshot to give it the brand treatment.</p>
       </div>
       <div class="feature">
+        <h3>Drag it anywhere</h3>
+        <p>The preview thumbnail is a real file — drag it straight into Slack, Mail, or Finder.</p>
+      </div>
+      <div class="feature">
+        <h3>Speaks your language</h3>
+        <p>English, French, Spanish, and Brazilian Portuguese — it follows your Mac.</p>
+      </div>
+      <div class="feature">
         <h3>Ships with a skill</h3>
         <p>Installs the team screenshot skill for Claude Code — your agent knows the house rules from day one.</p>
       </div>
@@ -277,6 +318,19 @@
       <p>Newspack Shots isn't just a screenshot app for people. It's also an MCP server — so the AI agents you work with take screenshots through the <strong>same styling engine you do</strong>.</p>
       <p>You press <kbd>⌃⇧2</kbd>; your agent calls a tool. The results are <strong>pixel-identical</strong>. Docs, P2 posts, and help pages stay visually consistent no matter who — or what — captured them.</p>
       <p>It comes with a <strong>skill</strong>: the team's screenshot playbook — canonical capture sizes, the website recipe, how to annotate — installed for Claude&nbsp;Code and <strong>kept up to date by the app</strong>.</p>
+      <div class="skill">
+        <div class="skill-head">
+          <code>newspack-shots</code>
+          <span>the skill and the MCP server share the name · installed at <code>~/.claude/skills/newspack-shots/</code></span>
+        </div>
+        <ul class="tools">
+          <li><code>capture_fullscreen</code><span>styled full-screen shot, saved and ready</span></li>
+          <li><code>capture_window</code><span>a named app's window, true corners and shadow</span></li>
+          <li><code>capture_region</code><span>an exact pixel region on a 3:2 canvas</span></li>
+          <li><code>style_image</code><span>brand any existing image — how agents style website captures</span></li>
+          <li><code>annotate_image</code><span>arrows, rectangles, spotlights, numbered counters</span></li>
+        </ul>
+      </div>
       <p class="setup">Setup is one click: menu bar → <strong>Set Up AI Agents…</strong> See the <a href="https://github.com/thomasguillot/newspack-shots-releases#for-ai-agents-mcp">README</a> for details.</p>
     </div>
   </section>
