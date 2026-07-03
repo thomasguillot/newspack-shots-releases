@@ -1,5 +1,7 @@
 # Newspack Shots — Downloads
 
+**→ [Download page](https://thomasguillot.github.io/newspack-shots-releases/)** — always points at the latest release.
+
 A native macOS menu-bar screenshot app for the Newspack team. Every capture is automatically styled to the brand standard — Cobalt background, padding, rounded corners, soft shadow — and an MCP server lets AI agents produce pixel-identical output.
 
 **Requires macOS 26 (Tahoe) or later, Apple Silicon.**
