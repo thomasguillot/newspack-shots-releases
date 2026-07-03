@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Newspack Shots — on-brand screenshots for humans and AI agents</title>
+<meta name="description" content="A macOS menu-bar app for the Newspack team. Every screenshot comes out on brand — whether a human takes it or an AI agent does.">
+<meta property="og:title" content="Newspack Shots">
+<meta property="og:description" content="On-brand screenshots for the Newspack team — humans and AI agents alike.">
+<meta property="og:image" content="https://thomasguillot.github.io/newspack-shots-releases/assets/og.png">
+<meta property="og:url" content="https://thomasguillot.github.io/newspack-shots-releases/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/icon.png">
+<style>
+  @font-face {
+    font-family: "Inter";
+    src: url("assets/fonts/InterVariable.woff2") format("woff2");
+    font-weight: 100 900;
+    font-display: swap;
+  }
+  :root {
+    /* brand.newspack.com/colors — Primary (Cobalt) & Secondary (Emerald) scales */
+    --cobalt-90: #001437;    /* Primary 900 */
+    --neutral-0: #FFFFFF;
+    --neutral-90: #1E1E1E;
+    --primary-60: #003DA5;   /* Primary 600 */
+    --secondary-50: #26D07C; /* Secondary 500 */
+    --primary-050: #BFCFE9;
+    --primary-100: #9FB6DD;
+    --primary-200: #809ED2;
+    --primary-500: #2055B0;
+    --primary-700: #00296E;
+    --primary-800: #001F53;
+  }
+  * { margin: 0; box-sizing: border-box; }
+  body {
+    background: var(--cobalt-90);
+    color: var(--neutral-0);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  /* Hero */
+  header { text-align: center; padding: 96px 0 64px; }
+  .icon {
+    width: 128px;
+    height: 128px;
+    filter: drop-shadow(0 20px 45px rgba(0, 61, 165, 0.55))
+            drop-shadow(0 6px 16px rgba(0, 0, 0, 0.40));
+  }
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin-top: 24px;
+  }
+  .tagline {
+    font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+    color: var(--primary-050);
+    max-width: 34em;
+    margin: 12px auto 36px;
+  }
+  .download {
+    display: inline-block;
+    background: var(--secondary-50);
+    color: var(--cobalt-90);
+    font-weight: 600;
+    font-size: 1.05rem;
+    padding: 14px 34px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: transform 120ms ease, box-shadow 120ms ease;
+  }
+  .download:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(38, 208, 124, 0.35);
+  }
+  .requirements {
+    margin-top: 16px;
+    font-size: 0.85rem;
+    color: var(--primary-200);
+  }
+
+  /* Hero shot — breaks out wider than the text column */
+  @property --shot-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+  }
+  .shot {
+    --shot-w: min(1240px, calc(100vw - 48px));
+    position: relative;
+    width: var(--shot-w);
+    margin: 0 calc((100% - var(--shot-w)) / 2) 96px;
+    background: var(--primary-800);
+    border: 1px solid var(--primary-700);
+    border-radius: 10px;
+    padding: 2px;
+    box-shadow: 0 30px 80px rgba(0, 5, 14, 0.65),
+                0 10px 28px rgba(0, 5, 14, 0.50);
+  }
+  .shot::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 12px;
+    padding: 2px;
+    background: conic-gradient(from var(--shot-angle),
+      transparent 0%, transparent 72%,
+      rgba(255, 255, 255, 0.75) 90%,
+      transparent 100%);
+    -webkit-mask: linear-gradient(#FFF 0 0) content-box, linear-gradient(#FFF 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#FFF 0 0) content-box, linear-gradient(#FFF 0 0);
+    mask-composite: exclude;
+    animation: shot-light 6s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes shot-light {
+    to { --shot-angle: 360deg; }
+  }
+  .shot img { width: 100%; height: auto; display: block; border-radius: 7px; }
+
+  /* Sections */
+  section { margin-bottom: 96px; }
+  h2 {
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .feature {
+    position: relative;
+    background: var(--primary-800);
+    border: 1px solid var(--primary-700);
+    border-radius: 12px;
+    padding: 24px;
+    transition: transform 160ms ease, border-color 160ms ease;
+  }
+  .feature::after {
+    /* cursor-tracking spotlight (--mx/--my set by the script below) */
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(38, 208, 124, 0.10), transparent 70%);
+    opacity: 0;
+    transition: opacity 200ms ease;
+    pointer-events: none;
+  }
+  .feature:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-500, #2055B0);
+  }
+  .feature:hover::after { opacity: 1; }
+  .feature h3 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+  .feature p { font-size: 0.9rem; color: var(--primary-100); }
+  kbd {
+    font-family: inherit;
+    background: var(--primary-700);
+    border-radius: 5px;
+    padding: 1px 7px;
+    font-size: 0.85em;
+  }
+
+  /* Humans & agents */
+  .duo { max-width: 44em; margin: 0 auto; text-align: center; }
+  .duo p { color: var(--primary-050); margin-bottom: 16px; }
+  .duo strong { color: var(--neutral-0); }
+  .duo .setup { font-size: 0.9rem; color: var(--primary-200); }
+
+  /* Install */
+  ol { max-width: 36em; margin: 0 auto; padding: 0; list-style: none; counter-reset: step; }
+  ol li {
+    counter-increment: step;
+    position: relative;
+    padding: 0 0 24px 56px;
+    color: var(--primary-050);
+  }
+  ol li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: calc(0.8em - 18px); /* center the 36px circle on the first text line */
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--primary-60);
+    color: var(--neutral-0);
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+  }
+  ol li:not(:last-child)::after {
+    /* connector between this circle and the next (4px breathing room each side) */
+    content: "";
+    position: absolute;
+    left: 17px;
+    top: calc(0.8em + 22px);
+    bottom: calc(22px - 0.8em);
+    width: 2px;
+    border-radius: 1px;
+    background: linear-gradient(to bottom, rgba(32, 85, 176, 0.9), rgba(0, 41, 110, 0.9));
+  }
+  ol strong { color: var(--neutral-0); }
+
+  footer {
+    border-top: 1px solid var(--primary-700);
+    padding: 32px 0 48px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--primary-200);
+  }
+  footer p + p { margin-top: 6px; }
+  a { color: var(--secondary-50); }
+  @media (prefers-reduced-motion: reduce) {
+    .download { transition: none; }
+    .shot::before { animation: none; }
+    .feature { transition: none; }
+    .feature:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <img class="icon" src="assets/icon.png" alt="" width="128" height="128">
+    <h1>Newspack Shots</h1>
+    <p class="tagline">Every screenshot on brand — whether you take it or your AI&nbsp;agent does.</p>
+    <a id="download" class="download" href="https://github.com/thomasguillot/newspack-shots-releases/releases/latest">Download for macOS</a>
+    <p class="requirements">v<span id="version">0.5.1</span> · macOS 26 (Tahoe) or later · Apple Silicon</p>
+  </header>
+
+  <main>
+
+  <div class="shot">
+    <img src="assets/hero.png" alt="newspack.com styled by Newspack Shots: Cobalt background, padding, rounded corners, soft shadow">
+  </div>
+
+  <section>
+    <h2>Capture. It's already styled.</h2>
+    <div class="features">
+      <div class="feature">
+        <h3><kbd>⌃⇧1</kbd>–<kbd>⌃⇧4</kbd> Capture anything</h3>
+        <p>Full screen, a window, a region, or a timed shot for menus and transient UI.</p>
+      </div>
+      <div class="feature">
+        <h3>Instant</h3>
+        <p>Saved to your folder and on your clipboard before any UI appears.</p>
+      </div>
+      <div class="feature">
+        <h3>On brand, automatically</h3>
+        <p>Cobalt backdrop, padding, rounded corners, soft shadow — zero clicks.</p>
+      </div>
+      <div class="feature">
+        <h3>Annotate</h3>
+        <p>Arrows, rectangles, spotlight, and numbered counters — all brand-styled.</p>
+      </div>
+      <div class="feature">
+        <h3>Style any image</h3>
+        <p>Right-click → Open With on an existing screenshot to give it the brand treatment.</p>
+      </div>
+      <div class="feature">
+        <h3>Ships with a skill</h3>
+        <p>Installs the team screenshot skill for Claude Code — your agent knows the house rules from day one.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>For humans and agents alike</h2>
+    <div class="duo">
+      <p>Newspack Shots isn't just a screenshot app for people. It's also an MCP server — so the AI agents you work with take screenshots through the <strong>same styling engine you do</strong>.</p>
+      <p>You press <kbd>⌃⇧2</kbd>; your agent calls a tool. The results are <strong>pixel-identical</strong>. Docs, P2 posts, and help pages stay visually consistent no matter who — or what — captured them.</p>
+      <p>It comes with a <strong>skill</strong>: the team's screenshot playbook — canonical capture sizes, the website recipe, how to annotate — installed for Claude&nbsp;Code and <strong>kept up to date by the app</strong>.</p>
+      <p class="setup">Setup is one click: menu bar → <strong>Set Up AI Agents…</strong> See the <a href="https://github.com/thomasguillot/newspack-shots-releases#for-ai-agents-mcp">README</a> for details.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Install in a minute</h2>
+    <ol>
+      <li><strong>Download</strong> the DMG and drag <strong>Newspack Shots</strong> onto <strong>Applications</strong>.</li>
+      <li>The app is unsigned, so macOS blocks it once: double-click it, click <strong>Done</strong>, then allow it under <strong>System Settings → Privacy&nbsp;&amp;&nbsp;Security → Open Anyway</strong>.</li>
+      <li>Trigger your first capture and grant <strong>Screen Recording</strong>, then quit and relaunch the app once.</li>
+      <li>Working with AI agents? Menu bar → <strong>Set Up AI Agents…</strong> — one click registers the MCP server and installs the team skill for Claude&nbsp;Code.</li>
+      <li>That's it — captures land styled, saved, and on your clipboard.</li>
+    </ol>
+  </section>
+
+  </main>
+
+  <footer>
+    <p>Screenshots never leave your Mac — no cloud, no upload, no analytics.</p>
+    <p>Made for the Newspack team ·
+      <a href="https://github.com/thomasguillot/newspack-shots-releases/releases">All releases &amp; checksums</a> ·
+      <a href="https://github.com/thomasguillot/newspack-shots-releases#readme">README</a>
+    </p>
+  </footer>
+
+</div>
+<script>
+  fetch("https://api.github.com/repos/thomasguillot/newspack-shots-releases/releases/latest")
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+    .then(function (rel) {
+      var dmg = (rel.assets || []).find(function (a) { return a.name.endsWith(".dmg"); });
+      if (dmg) document.getElementById("download").href = dmg.browser_download_url;
+      if (rel.tag_name) document.getElementById("version").textContent = rel.tag_name.replace(/^v/, "");
+    })
+    .catch(function () { /* static fallback already in the markup */ });
+
+  document.querySelectorAll(".feature").forEach(function (tile) {
+    tile.addEventListener("pointermove", function (e) {
+      var r = tile.getBoundingClientRect();
+      tile.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      tile.style.setProperty("--my", (e.clientY - r.top) + "px");
+    });
+  });
+</script>
+</body>
+</html>
