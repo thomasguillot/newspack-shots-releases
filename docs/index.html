@@ -37,7 +37,12 @@
 
   /* Hero */
   header { text-align: center; padding: 96px 0 64px; }
-  .icon { width: 128px; height: 128px; }
+  .icon {
+    width: 128px;
+    height: 128px;
+    filter: drop-shadow(0 20px 45px rgba(0, 61, 165, 0.55))
+            drop-shadow(0 6px 16px rgba(0, 0, 0, 0.40));
+  }
   h1 {
     font-size: clamp(2.2rem, 5vw, 3.4rem);
     font-weight: 700;
@@ -71,13 +76,42 @@
     color: rgba(255, 255, 255, 0.5);
   }
 
-  /* Hero shot */
+  /* Hero shot — breaks out wider than the text column */
+  @property --shot-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+  }
   .shot {
+    --shot-w: min(1080px, calc(100vw - 48px));
+    position: relative;
+    width: var(--shot-w);
+    margin: 0 calc((100% - var(--shot-w)) / 2) 96px;
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 16px;
     padding: 16px;
-    margin-bottom: 96px;
+  }
+  .shot::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 18px;
+    padding: 2px;
+    background: conic-gradient(from var(--shot-angle),
+      transparent 0%, transparent 72%,
+      rgba(38, 208, 124, 0.9) 86%,
+      rgba(255, 255, 255, 0.7) 92%,
+      transparent 100%);
+    -webkit-mask: linear-gradient(#FFF 0 0) content-box, linear-gradient(#FFF 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#FFF 0 0) content-box, linear-gradient(#FFF 0 0);
+    mask-composite: exclude;
+    animation: shot-light 6s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes shot-light {
+    to { --shot-angle: 360deg; }
   }
   .shot img { width: 100%; height: auto; display: block; border-radius: 8px; }
 
@@ -124,7 +158,8 @@
   ol li::before {
     content: counter(step);
     position: absolute;
-    left: 0; top: 0;
+    left: 0;
+    top: calc(0.8em - 18px); /* center the 36px circle on the first text line */
     width: 36px; height: 36px;
     border-radius: 50%;
     background: var(--primary-60);
@@ -144,6 +179,7 @@
   a { color: var(--secondary-50); }
   @media (prefers-reduced-motion: reduce) {
     .download { transition: none; }
+    .shot::before { animation: none; }
   }
 </style>
 </head>
