@@ -60,6 +60,20 @@ All tools return the saved file's path; capture/style tools also report the canv
 
 When annotating, prefer arrows and numbered counters; there is deliberately no text type — put words in the surrounding document.
 
+### Install the full agent skill
+
+The app ships with a Claude Code skill containing the complete team
+screenshot guidelines. After installing the app:
+
+```sh
+mkdir -p ~/.claude/skills/newspack-shots && \
+  cp "/Applications/Newspack Shots.app/Contents/Resources/SKILL.md" \
+     ~/.claude/skills/newspack-shots/SKILL.md
+```
+
+Your agent will then follow the house rules automatically whenever you ask
+it for a Newspack screenshot. Re-run the copy after app updates.
+
 ## License
 
 Proprietary — © Automattic. Built for the Newspack team; provided as-is.
