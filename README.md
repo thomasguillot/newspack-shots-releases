@@ -26,8 +26,8 @@ Upgrading? Just replace the app in Applications — permissions stay granted. Ev
 
 ## What you get
 
-- **⌃⇧1** full screen (with a display picker on multi-monitor setups) · **⌃⇧2** window (hover, ⇥ to cycle stacks, click) · **⌃⇧3** region (free drag with a pixel-precision magnifier) · **⌃⇧4** timed 5s capture (for open menus and other transient UI)
-- Instant auto-save to your folder + clipboard, with a quick preview bottom-left — annotate only when you want to (arrows, rectangles, spotlight, numbered counters)
+- **⌃⇧1** full screen (with a display picker on multi-monitor setups; desktop icons hidden by default) · **⌃⇧2** window (hover, ⇥ to cycle stacks, click) · **⌃⇧3** region (free drag with a pixel-precision magnifier) · **⌃⇧4** timed 5s capture (for open menus and other transient UI) · **⌃⇧5** copy on-screen text (OCR to clipboard, nothing saved)
+- Instant auto-save to your folder + clipboard, with a quick preview bottom-left — annotate only when you want to (arrows, rectangles, spotlight, numbered counters, and pixelate to redact emails, keys, and customer data)
 - **Auto-updates** — the app checks this repo for new versions after launch and installs them in place (toggle in Settings, or **Check for Updates…** in the menu)
 
 Screenshots never leave your Mac — no cloud, no upload, no analytics. The update check only talks to this repository's Releases.
@@ -50,9 +50,11 @@ claude mcp add newspack-shots -- "/Applications/Newspack Shots.app/Contents/MacO
 | `capture_window(app, title_contains?)` | Styled shot of a named app's window — no interaction needed |
 | `capture_region(x, y, width, height)` | Styled shot of exact screen coordinates (output canvas expands to 3:2) |
 | `style_image(input_path, output_path?)` | Apply the Newspack style to any existing image — the workhorse for browser screenshots |
-| `annotate_image(input_path, annotations, output_path?)` | Draw brand-styled arrows, rectangles, spotlight, and numbered counters via JSON |
+| `annotate_image(input_path, annotations, output_path?)` | Draw brand-styled arrows, rectangles, spotlight, numbered counters — and pixelate, an irreversible mosaic for redacting secrets — via JSON |
+| `read_text(x?, y?, width?, height?)` | OCR a screen region (or the whole display) and return the text in reading order — nothing styled or saved |
+| `list_windows()` | List capturable windows (app, title, size, position) so agents don't guess `capture_window` arguments |
 
-All tools return the saved file's path; capture/style tools also report the canvas size and where the original capture sits on it, so you can convert capture coordinates into canvas coordinates when annotating.
+Capture, style, and annotate tools return the saved file's path; capture/style tools also report the canvas size and where the original capture sits on it, so you can convert capture coordinates into canvas coordinates when annotating.
 
 ### Website screenshots (recommended recipe)
 
