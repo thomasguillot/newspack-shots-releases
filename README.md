@@ -26,8 +26,8 @@ Upgrading? Just replace the app in Applications — permissions stay granted. Ev
 
 ## What you get
 
-- **⌃⇧1** full screen (with a display picker on multi-monitor setups; clean desktop by default — icons hidden, wallpaper replaced by the brand background) · **⌃⇧2** window (hover, ⇥ to cycle stacks, click) · **⌃⇧3** region (free drag with a pixel-precision magnifier) · **⌃⇧4** timed 5s capture (for open menus and other transient UI) · **⌃⇧5** copy on-screen text (OCR to clipboard, nothing saved)
-- Instant auto-save to your folder + clipboard, with a quick preview bottom-left — annotate only when you want to (arrows, rectangles, spotlight, numbered counters, and pixelate to redact emails, keys, and customer data)
+- **⌃⇧1** full screen (with a display picker on multi-monitor setups; clean desktop by default — icons hidden, wallpaper replaced by the brand background) · **⌃⇧2** window (hover, ⇥ to cycle stacks, click) · **⌃⇧3** region (free drag with a pixel-precision magnifier; hold Space mid-drag to reposition) · **⌃⇧4** timed 5s capture (for open menus and other transient UI) · **⌃⇧5** copy on-screen text (OCR to clipboard, nothing saved)
+- Instant auto-save to your folder + clipboard, with a quick preview bottom-left that tidies itself (previews slide away after two minutes; the stack never outgrows your screen) — annotate only when you want to (arrows, rectangles, spotlight, numbered counters, and pixelate to redact emails, keys, and customer data)
 - **Auto-updates** — the app checks this repo for new versions after launch and installs them in place (toggle in Settings, or **Check for Updates…** in the menu)
 
 Screenshots never leave your Mac — no cloud, no upload, no analytics. The update check only talks to this repository's Releases.
