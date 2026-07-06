@@ -161,6 +161,12 @@
   .feature:hover::after { opacity: 1; }
   .feature h3 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
   .feature p { font-size: 0.9rem; color: var(--primary-100); }
+  .grid-note {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--primary-200);
+  }
   kbd {
     font-family: inherit;
     background: var(--primary-700);
@@ -278,12 +284,12 @@
     <h2>Capture. It's already styled.</h2>
     <div class="features">
       <div class="feature">
-        <h3><kbd>⌃⇧1</kbd>–<kbd>⌃⇧6</kbd> Capture anything</h3>
-        <p>Full screen, a window, a region, a timed shot, a whole scrolling page — or lift text straight off the screen. Can't remember which? <kbd>⌃⇧0</kbd> opens the All-In-One toolbar.</p>
-      </div>
-      <div class="feature">
         <h3>On brand, automatically</h3>
         <p>Cobalt backdrop, padding, rounded corners, soft shadow — zero clicks.</p>
+      </div>
+      <div class="feature">
+        <h3>Saved before you blink</h3>
+        <p>Every capture is already a file and on your clipboard before the editor even appears.</p>
       </div>
       <div class="feature">
         <h3>Ships with a skill</h3>
@@ -305,6 +311,37 @@
   </section>
 
   <section>
+    <h2>Six ways to capture</h2>
+    <div class="features">
+      <div class="feature">
+        <h3><kbd>⌃⇧1</kbd> Full screen</h3>
+        <p>The whole display — desktop icons hidden, wallpaper swapped for the brand background.</p>
+      </div>
+      <div class="feature">
+        <h3><kbd>⌃⇧2</kbd> Window</h3>
+        <p>Hover to pick any window, captured with its true macOS corners and shadow.</p>
+      </div>
+      <div class="feature">
+        <h3><kbd>⌃⇧3</kbd> Region</h3>
+        <p>Drag an exact selection, guided by a pixel-precision magnifier.</p>
+      </div>
+      <div class="feature">
+        <h3><kbd>⌃⇧4</kbd> Timed</h3>
+        <p>Select a region, then a countdown you can pause — stage menus and other vanishing UI.</p>
+      </div>
+      <div class="feature">
+        <h3><kbd>⌃⇧5</kbd> Scrolling</h3>
+        <p>Scroll through a long page — or let Auto-Scroll take over — and get one tall stitched shot.</p>
+      </div>
+      <div class="feature">
+        <h3><kbd>⌃⇧6</kbd> Capture Text</h3>
+        <p>Lift text straight off the screen onto your clipboard. Nothing styled, nothing saved.</p>
+      </div>
+    </div>
+    <p class="grid-note">Can't remember which is which? <kbd>⌃⇧0</kbd> opens the All-In-One toolbar — every capture mode in one panel.</p>
+  </section>
+
+  <section>
     <h2>For humans and agents alike</h2>
     <div class="duo">
       <p>Newspack Shots isn't just a screenshot app for people. It's also an MCP server — so the AI agents you work with take screenshots through the <strong>same styling engine you do</strong>.</p>
@@ -319,6 +356,7 @@
           <li><code>capture_fullscreen</code><span>styled full-screen shot, saved and ready</span></li>
           <li><code>capture_window</code><span>a named app's window, true corners and shadow</span></li>
           <li><code>capture_region</code><span>an exact pixel region on a 3:2 canvas</span></li>
+          <li><code>capture_scrolling</code><span>auto-scrolls a region and stitches it into one tall shot</span></li>
           <li><code>style_image</code><span>brand any existing image — how agents style website captures</span></li>
           <li><code>annotate_image</code><span>arrows, rectangles, spotlights, counters — and pixelate, to redact secrets</span></li>
           <li><code>read_text</code><span>OCR a screen region — read dialogs and errors, nothing saved</span></li>

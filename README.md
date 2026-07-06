@@ -49,6 +49,7 @@ claude mcp add newspack-shots -- "/Applications/Newspack Shots.app/Contents/MacO
 | `capture_fullscreen()` | Styled shot of the main display |
 | `capture_window(app, title_contains?)` | Styled shot of a named app's window — no interaction needed |
 | `capture_region(x, y, width, height)` | Styled shot of exact screen coordinates (output canvas expands to 3:2) |
+| `capture_scrolling(x, y, width, height, max_seconds?)` | Auto-scrolls a region and stitches the frames into one tall styled shot (needs the Accessibility permission; falls back to a single frame without it) |
 | `style_image(input_path, output_path?)` | Apply the Newspack style to any existing image — the workhorse for browser screenshots |
 | `annotate_image(input_path, annotations, output_path?)` | Draw brand-styled arrows, rectangles, spotlight, numbered counters — and pixelate, an irreversible mosaic for redacting secrets — via JSON |
 | `read_text(x?, y?, width?, height?)` | OCR a screen region (or the whole display) and return the text in reading order — nothing styled or saved |
