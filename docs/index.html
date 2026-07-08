@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Newspack Shots — on-brand screenshots for humans and AI agents</title>
-<meta name="description" content="A macOS menu-bar app for the Newspack team. Every screenshot comes out on brand — whether a human takes it or an AI agent does.">
+<title>Newspack Shots — on-brand screenshots and recordings for humans and AI agents</title>
+<meta name="description" content="A macOS menu-bar app for the Newspack team. Every screenshot and screen recording comes out on brand — whether a human takes it or an AI agent does.">
 <meta property="og:title" content="Newspack Shots">
-<meta property="og:description" content="On-brand screenshots for the Newspack team — humans and AI agents alike.">
+<meta property="og:description" content="On-brand screenshots and screen recordings for the Newspack team — humans and AI agents alike.">
 <meta property="og:image" content="https://thomasguillot.github.io/newspack-shots-releases/assets/og.png">
 <meta property="og:url" content="https://thomasguillot.github.io/newspack-shots-releases/">
 <meta name="twitter:card" content="summary_large_image">
@@ -161,12 +161,6 @@
   .feature:hover::after { opacity: 1; }
   .feature h3 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
   .feature p { font-size: 0.9rem; color: var(--primary-100); }
-  .grid-note {
-    margin-top: 24px;
-    text-align: center;
-    font-size: 0.9rem;
-    color: var(--primary-200);
-  }
   kbd {
     font-family: inherit;
     background: var(--primary-700);
@@ -269,9 +263,9 @@
   <header>
     <img class="icon" src="assets/icon.png" alt="" width="64" height="64">
     <h1>Newspack Shots</h1>
-    <p class="tagline">Every screenshot on brand — whether you take it or your AI&nbsp;agent does.</p>
+    <p class="tagline">Every screenshot — and screen recording — on brand, whether you take it or your AI&nbsp;agent does.</p>
     <a id="download" class="download" href="https://github.com/thomasguillot/newspack-shots-releases/releases/latest">Download for macOS</a>
-    <p class="requirements">v<span id="version">0.6.0</span> · macOS 26 (Tahoe) or later · Apple Silicon</p>
+    <p class="requirements">v<span id="version">0.9.0</span> · macOS 26 (Tahoe) or later · Apple Silicon</p>
   </header>
 
   <main>
@@ -281,37 +275,37 @@
   </div>
 
   <section>
-    <h2>Capture. It's already styled.</h2>
+    <h2>Capture or record. It's already styled.</h2>
     <div class="features">
       <div class="feature">
         <h3>On brand, automatically</h3>
-        <p>Cobalt backdrop, padding, rounded corners, soft shadow — zero clicks.</p>
+        <p>Cobalt backdrop, border, rounded corners, soft shadow — zero clicks, on every capture.</p>
       </div>
       <div class="feature">
         <h3>Saved before you blink</h3>
-        <p>Every capture is already a file and on your clipboard before the editor even appears.</p>
+        <p>Already a file and on your clipboard before the preview appears — drag it into Slack.</p>
+      </div>
+      <div class="feature">
+        <h3>Recordings included</h3>
+        <p>Screen recordings get the same treatment: a styled MP4 on a 16:9 canvas, clicks rippling.</p>
+      </div>
+      <div class="feature">
+        <h3>Trim built in</h3>
+        <p>Cut the start and end of a take right from its preview — Save writes over the same file.</p>
       </div>
       <div class="feature">
         <h3>Ships with a skill</h3>
-        <p>Installs the team screenshot skill for Claude Code — your agent knows the rules.</p>
-      </div>
-      <div class="feature">
-        <h3>Style any image</h3>
-        <p>Right-click → Open With on an existing screenshot to give it the brand treatment.</p>
-      </div>
-      <div class="feature">
-        <h3>Drag it anywhere</h3>
-        <p>The preview thumbnail is a real file — drag it straight into Slack, Mail, or Finder.</p>
+        <p>Installs the team screenshot skill for Claude Code — your agent knows the house rules.</p>
       </div>
       <div class="feature">
         <h3>Annotate &amp; redact</h3>
-        <p>Arrows, rectangles, spotlight, numbered counters — and pixelate, for the parts nobody should see.</p>
+        <p>Arrows, rectangles, spotlight, counters — and pixelate, for the parts nobody should see.</p>
       </div>
     </div>
   </section>
 
   <section>
-    <h2>Six ways to capture</h2>
+    <h2>Nine keys to know</h2>
     <div class="features">
       <div class="feature">
         <h3><kbd>⌃⇧1</kbd> Full screen</h3>
@@ -319,11 +313,11 @@
       </div>
       <div class="feature">
         <h3><kbd>⌃⇧2</kbd> Window</h3>
-        <p>Hover to pick any window, captured with its true macOS corners and shadow.</p>
+        <p>Hover to pick any window — captured with its true macOS corners and its real shadow.</p>
       </div>
       <div class="feature">
         <h3><kbd>⌃⇧3</kbd> Region</h3>
-        <p>Drag an exact selection, guided by a pixel-precision magnifier.</p>
+        <p>Drag an exact selection with a pixel-precision magnifier — it snaps to screen edges.</p>
       </div>
       <div class="feature">
         <h3><kbd>⌃⇧4</kbd> Timed</h3>
@@ -331,14 +325,25 @@
       </div>
       <div class="feature">
         <h3><kbd>⌃⇧5</kbd> Scrolling</h3>
-        <p>Scroll through a long page — or let Auto-Scroll take over — and get one tall stitched shot.</p>
+        <p>Scroll through a long page — or let Auto-Scroll drive — for one tall stitched shot.</p>
       </div>
       <div class="feature">
         <h3><kbd>⌃⇧6</kbd> Capture Text</h3>
         <p>Lift text straight off the screen onto your clipboard. Nothing styled, nothing saved.</p>
       </div>
+      <div class="feature">
+        <h3><kbd>⌃⇧7</kbd> Record Screen</h3>
+        <p>A countdown, then a styled 16:9 clip of your region — clicks ripple in brand color.</p>
+      </div>
+      <div class="feature">
+        <h3><kbd>Space</kbd> Flip the mode</h3>
+        <p>Tap mid-selection to switch between region and window — screenshots and recordings.</p>
+      </div>
+      <div class="feature">
+        <h3><kbd>⌃⇧0</kbd> All-In-One</h3>
+        <p>A floating toolbar with every capture mode plus Settings — when the keys escape you.</p>
+      </div>
     </div>
-    <p class="grid-note">Can't remember which is which? <kbd>⌃⇧0</kbd> opens the All-In-One toolbar — every capture mode in one panel.</p>
   </section>
 
   <section>
@@ -357,6 +362,8 @@
           <li><code>capture_window</code><span>a named app's window, true corners and shadow</span></li>
           <li><code>capture_region</code><span>an exact pixel region on a 3:2 canvas</span></li>
           <li><code>capture_scrolling</code><span>auto-scrolls a region and stitches it into one tall shot</span></li>
+          <li><code>record_screen</code><span>records a region as a styled 16:9 clip — clicks ripple, clean desktop applies</span></li>
+          <li><code>video_frames</code><span>extracts stills from a recording so agents can verify what it shows</span></li>
           <li><code>style_image</code><span>brand any existing image — how agents style website captures</span></li>
           <li><code>annotate_image</code><span>arrows, rectangles, spotlights, counters — and pixelate, to redact secrets</span></li>
           <li><code>read_text</code><span>OCR a screen region — read dialogs and errors, nothing saved</span></li>
@@ -381,7 +388,7 @@
   </main>
 
   <footer>
-    <p>Screenshots never leave your Mac — no cloud, no upload, no analytics.</p>
+    <p>Screenshots and recordings never leave your Mac — no cloud, no upload, no analytics.</p>
     <p>Made for the Newspack team ·
       <a href="https://github.com/thomasguillot/newspack-shots-releases/releases">All releases &amp; checksums</a> ·
       <a href="https://github.com/thomasguillot/newspack-shots-releases#readme">README</a>
