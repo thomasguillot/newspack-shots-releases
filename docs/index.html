@@ -351,7 +351,7 @@
     <div class="duo">
       <p>Newspack Shots isn't just a screenshot app for people. It's also an MCP server — so the AI agents you work with take screenshots through the <strong>same styling engine you do</strong>.</p>
       <p>You press <kbd>⌃⇧2</kbd>; your agent calls a tool. The results are <strong>pixel-identical</strong>. Docs, P2 posts, and help pages stay visually consistent no matter who — or what — captured them.</p>
-      <p>It comes with a <strong>skill</strong>: the team's screenshot playbook — canonical capture sizes, the website recipe, how to annotate — installed for Claude&nbsp;Code and <strong>kept up to date by the app</strong>.</p>
+      <p>It comes with a <strong>skill</strong>: the team's screenshot playbook — canonical capture sizes, the website recipe, how to annotate — installed for Claude&nbsp;Code <strong>automatically</strong> and kept up to date by the app.</p>
       <div class="skill">
         <div class="skill-head">
           <code>newspack-shots</code>
@@ -366,11 +366,12 @@
           <li><code>video_frames</code><span>extracts stills from a recording so agents can verify what it shows</span></li>
           <li><code>style_image</code><span>brand any existing image — how agents style website captures</span></li>
           <li><code>annotate_image</code><span>arrows, rectangles, spotlights, counters — and pixelate, to redact secrets</span></li>
+          <li><code>compose_grid</code><span>lays 2–12 shots into one styled masonry grid — same padding, background, corners</span></li>
           <li><code>read_text</code><span>OCR a screen region — read dialogs and errors, nothing saved</span></li>
           <li><code>list_windows</code><span>what's capturable, so agents don't guess window names</span></li>
         </ul>
       </div>
-      <p class="setup">Setup is one click: menu bar → <strong>Set Up AI Agents…</strong> See the <a href="https://github.com/thomasguillot/newspack-shots-releases#for-ai-agents-mcp">README</a> for details.</p>
+      <p class="setup">No setup: the app installs the skill and registers the MCP server for Claude&nbsp;Code <strong>on first launch</strong> — toggle it in Settings → General. See the <a href="https://github.com/thomasguillot/newspack-shots-releases#for-ai-agents-mcp">README</a> for details.</p>
     </div>
   </section>
 
@@ -380,7 +381,7 @@
       <li><strong>Download</strong> the DMG and drag <strong>Newspack Shots</strong> onto <strong>Applications</strong>.</li>
       <li>The app is unsigned, so macOS blocks it once: double-click it, click <strong>Done</strong>, then allow it under <strong>System Settings → Privacy&nbsp;&amp;&nbsp;Security → Open Anyway</strong>.</li>
       <li>Trigger your first capture and grant <strong>Screen Recording</strong>, then quit and relaunch the app once.</li>
-      <li>Working with AI agents? Menu bar → <strong>Set Up AI Agents…</strong> — one click registers the MCP server and installs the team skill for Claude&nbsp;Code.</li>
+      <li>Working with AI agents? Nothing to do — the app registers the MCP server and installs the team skill for Claude&nbsp;Code automatically (opt out in Settings → General).</li>
       <li>That's it — captures land styled, saved, and on your clipboard.</li>
     </ol>
   </section>

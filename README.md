@@ -34,7 +34,7 @@ Screenshots never leave your Mac — no cloud, no upload, no analytics. The upda
 
 ## For AI agents (MCP)
 
-The app doubles as an MCP server, so agents produce screenshots pixel-identical to yours. After installing the app (and granting Screen Recording), just use the menu bar icon → **Set Up AI Agents…** — one click installs the team screenshot skill for Claude Code and registers the MCP server. The app keeps the installed skill up to date automatically.
+The app doubles as an MCP server, so agents produce screenshots pixel-identical to yours. After installing the app (and granting Screen Recording), setup is automatic: on first launch it installs the team screenshot skill for Claude Code and registers the MCP server, keeping both up to date. It's on by default — toggle it under **Settings → General → "Set up AI agents"**.
 
 Using another MCP client? It's a standard stdio server — register it manually:
 
@@ -54,6 +54,7 @@ claude mcp add newspack-shots -- "/Applications/Newspack Shots.app/Contents/MacO
 | `video_frames(path, times)` | Extracts still frames from a recording as PNGs so agents can verify what it actually shows |
 | `style_image(input_path, output_path?)` | Apply the Newspack style to any existing image — the workhorse for browser screenshots |
 | `annotate_image(input_path, annotations, output_path?)` | Draw brand-styled arrows, rectangles, spotlight, numbered counters — and pixelate, an irreversible mosaic for redacting secrets — via JSON |
+| `compose_grid(input_paths, columns?, output_path?)` | Lay 2–12 raw captures into one styled masonry grid (reading order, columns auto or 2–4) — same padding, background, and rounded corners as a single shot |
 | `read_text(x?, y?, width?, height?)` | OCR a screen region (or the whole display) and return the text in reading order — nothing styled or saved |
 | `list_windows()` | List capturable windows (app, title, size, position) so agents don't guess `capture_window` arguments |
 
@@ -70,7 +71,7 @@ When annotating, prefer arrows and numbered counters; there is deliberately no t
 
 ### The full agent skill
 
-**Set Up AI Agents…** also installs the bundled Claude Code skill with the
+Automatic setup also installs the bundled Claude Code skill with the
 complete team screenshot guidelines — your agent follows the house rules
 automatically whenever you ask it for a Newspack screenshot. Manual
 fallback if you prefer:
