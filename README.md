@@ -50,7 +50,7 @@ claude mcp add newspack-shots -- "/Applications/Newspack Shots.app/Contents/MacO
 | `capture_window(app, title_contains?)` | Styled shot of a named app's window — no interaction needed |
 | `capture_region(x, y, width, height)` | Styled shot of exact screen coordinates (output canvas expands to 3:2) |
 | `capture_scrolling(x, y, width, height, max_seconds?)` | Auto-scrolls a region and stitches the frames into one tall styled shot (needs the Accessibility permission; falls back to a single frame without it) |
-| `record_screen(x, y, width, height, duration)` | Records a region as a styled MP4 on a 16:9 brand canvas — clicks ripple, clean desktop applies |
+| `style_video(input_path, output_path?)` | Apply the Newspack style to a video — a 16:9 brand canvas around workflow recordings agents make in a background browser, hands off your screen |
 | `video_frames(path, times)` | Extracts still frames from a recording as PNGs so agents can verify what it actually shows |
 | `style_image(input_path, output_path?)` | Apply the Newspack style to any existing image — the workhorse for browser screenshots |
 | `annotate_image(input_path, annotations, output_path?)` | Draw brand-styled arrows, rectangles, spotlight, numbered counters — and pixelate, an irreversible mosaic for redacting secrets — via JSON |
