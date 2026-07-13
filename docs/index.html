@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Newspack Shots — on-brand screenshots and recordings for humans and AI agents</title>
-<meta name="description" content="A macOS menu-bar app for the Newspack team. Every screenshot and screen recording comes out on brand — whether a human takes it or an AI agent does.">
+<title>Newspack Shots: on-brand screenshots and recordings for humans and AI agents</title>
+<meta name="description" content="A macOS menu-bar app for the Newspack team. Every screenshot and screen recording comes out on brand, whether a human takes it or an AI agent does.">
 <meta property="og:title" content="Newspack Shots">
-<meta property="og:description" content="On-brand screenshots and screen recordings for the Newspack team — humans and AI agents alike.">
+<meta property="og:description" content="On-brand screenshots and screen recordings for the Newspack team, humans and AI agents alike.">
 <meta property="og:image" content="https://thomasguillot.github.io/newspack-shots-releases/assets/og.png">
 <meta property="og:url" content="https://thomasguillot.github.io/newspack-shots-releases/">
 <meta name="twitter:card" content="summary_large_image">
@@ -133,7 +133,21 @@
     text-align: center;
     margin-bottom: 40px;
   }
-  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .lead-in { text-align: center; color: var(--primary-050); margin: 0 auto 40px; }
+  h2:has(+ .lead-in) { margin-bottom: 12px; }
+  .features {
+    --grid-w: min(1240px, calc(100vw - 48px));
+    width: var(--grid-w);
+    margin: 0 calc((100% - var(--grid-w)) / 2);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .features.tools { grid-template-columns: repeat(4, 1fr); }
+  .tools .lead h3 code { background: var(--secondary-50); color: var(--cobalt-90); }
+  @media (max-width: 980px) {
+    .features, .features.tools { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  }
   .feature {
     position: relative;
     background: var(--primary-800);
@@ -171,7 +185,7 @@
 
   /* Humans & agents */
   .duo { max-width: 44em; margin: 0 auto; text-align: center; }
-  .duo p { color: var(--primary-050); margin-bottom: 16px; }
+  .duo > p { color: var(--primary-050); margin-bottom: 16px; }
   .duo strong { color: var(--neutral-0); }
   .duo .setup { font-size: 0.9rem; color: var(--primary-200); }
 
@@ -183,29 +197,7 @@
     padding: 1px 7px;
     font-size: 0.85em;
   }
-  .skill {
-    max-width: 44em;
-    margin: 32px auto 16px;
-    background: var(--primary-800);
-    border: 1px solid var(--primary-700);
-    border-radius: 12px;
-    padding: 24px;
-    text-align: left;
-  }
-  .skill-head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 6px 12px;
-    padding-bottom: 16px;
-    margin-bottom: 16px;
-    border-bottom: 1px solid var(--primary-700);
-  }
-  .skill-head > code { font-size: 0.95rem; font-weight: 600; }
-  .skill-head span { font-size: 0.85rem; color: var(--primary-200); }
-  .tools { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-  .tools li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
-  .tools li span { font-size: 0.9rem; color: var(--primary-100); }
+  .duo .features { margin-top: 32px; margin-bottom: 16px; text-align: left; }
 
   /* Install */
   ol { max-width: 36em; margin: 0 auto; padding: 0; list-style: none; counter-reset: step; }
@@ -263,7 +255,7 @@
   <header>
     <img class="icon" src="assets/icon.png" alt="" width="64" height="64">
     <h1>Newspack Shots</h1>
-    <p class="tagline">Every screenshot — and screen recording — on brand, whether you take it or your AI&nbsp;agent does.</p>
+    <p class="tagline">Every screenshot and screen recording on brand, whether you take it or your AI&nbsp;agent does.</p>
     <a id="download" class="download" href="https://github.com/thomasguillot/newspack-shots-releases/releases/latest">Download for macOS</a>
     <p class="requirements">v<span id="version">0.9.0</span> · macOS 26 (Tahoe) or later · Apple Silicon</p>
   </header>
@@ -276,14 +268,15 @@
 
   <section>
     <h2>Capture or record. It's already styled.</h2>
+    <p class="lead-in">This is what you get out of the box:</p>
     <div class="features">
       <div class="feature">
         <h3>On brand, automatically</h3>
-        <p>Cobalt backdrop, border, rounded corners, soft shadow — zero clicks, on every capture.</p>
+        <p>Cobalt backdrop, border, rounded corners, soft shadow. Zero clicks, on every capture.</p>
       </div>
       <div class="feature">
         <h3>Saved before you blink</h3>
-        <p>Already a file and on your clipboard before the preview appears — drag it into Slack.</p>
+        <p>Already a file and on your clipboard before the preview appears. Drag it into Slack.</p>
       </div>
       <div class="feature">
         <h3>Recordings included</h3>
@@ -291,41 +284,42 @@
       </div>
       <div class="feature">
         <h3>Trim built in</h3>
-        <p>Cut a take from its preview — or Style a Video… to brand and trim any MP4 or MOV file.</p>
+        <p>Cut a take from its preview, or Style a Video… to brand and trim any MP4 or MOV file.</p>
       </div>
       <div class="feature">
         <h3>Ships with a skill</h3>
-        <p>Installs the team screenshot skill for Claude Code — your agent knows the house rules.</p>
+        <p>Installs the team screenshot skill for Claude Code, so your agent knows the house rules.</p>
       </div>
       <div class="feature">
         <h3>Annotate &amp; redact</h3>
-        <p>Arrows, rectangles, spotlight, counters — and pixelate, for the parts nobody should see.</p>
+        <p>Arrows, rectangles, spotlight, counters, and pixelate for the parts nobody should see.</p>
       </div>
     </div>
   </section>
 
   <section>
     <h2>Nine keys to know</h2>
+    <p class="lead-in">Hold <kbd>⌃⇧</kbd>, pick a number:</p>
     <div class="features">
       <div class="feature">
         <h3><kbd>⌃⇧1</kbd> Full screen</h3>
-        <p>The whole display — desktop icons hidden, wallpaper swapped for the brand background.</p>
+        <p>The whole display: desktop icons hidden, wallpaper swapped for the brand background.</p>
       </div>
       <div class="feature">
         <h3><kbd>⌃⇧2</kbd> Window</h3>
-        <p>Hover to pick any window — captured with its true macOS corners and its real shadow.</p>
+        <p>Hover to pick any window, captured with its true macOS corners and its real shadow.</p>
       </div>
       <div class="feature">
         <h3><kbd>⌃⇧3</kbd> Region</h3>
-        <p>Drag an exact selection with a pixel-precision magnifier — it snaps to screen edges.</p>
+        <p>Drag an exact selection with a pixel-precision magnifier that snaps to screen edges.</p>
       </div>
       <div class="feature">
         <h3><kbd>⌃⇧4</kbd> Timed</h3>
-        <p>Select a region, then a countdown you can pause — stage menus and other vanishing UI.</p>
+        <p>Select a region, then a countdown you can pause to stage menus and other vanishing UI.</p>
       </div>
       <div class="feature">
         <h3><kbd>⌃⇧5</kbd> Scrolling</h3>
-        <p>Scroll through a long page — or let Auto-Scroll drive — for one tall stitched shot.</p>
+        <p>Scroll through a long page, or let Auto-Scroll drive it, for one tall stitched shot.</p>
       </div>
       <div class="feature">
         <h3><kbd>⌃⇧6</kbd> Capture Text</h3>
@@ -333,15 +327,15 @@
       </div>
       <div class="feature">
         <h3><kbd>⌃⇧7</kbd> Record Screen</h3>
-        <p>A countdown, then a styled 16:9 clip of your region — clicks ripple in brand color.</p>
+        <p>A countdown, then a styled 16:9 clip of your region. Clicks ripple in the brand color.</p>
       </div>
       <div class="feature">
         <h3><kbd>Space</kbd> Flip the mode</h3>
-        <p>Tap mid-selection to switch between region and window — screenshots and recordings.</p>
+        <p>Tap mid-selection to switch between region and window, screenshots and recordings alike.</p>
       </div>
       <div class="feature">
         <h3><kbd>⌃⇧0</kbd> All-In-One</h3>
-        <p>A floating toolbar with every capture mode plus Settings — when the keys escape you.</p>
+        <p>A floating toolbar with every capture mode plus Settings, for when the keys escape you.</p>
       </div>
     </div>
   </section>
@@ -349,29 +343,28 @@
   <section>
     <h2>For humans and agents alike</h2>
     <div class="duo">
-      <p>Newspack Shots isn't just a screenshot app for people. It's also an MCP server — so the AI agents you work with take screenshots through the <strong>same styling engine you do</strong>.</p>
-      <p>You press <kbd>⌃⇧2</kbd>; your agent calls a tool. The results are <strong>pixel-identical</strong>. Docs, P2 posts, and help pages stay visually consistent no matter who — or what — captured them.</p>
-      <p>It comes with a <strong>skill</strong>: the team's screenshot playbook — canonical capture sizes, the website recipe, how to annotate — installed for Claude&nbsp;Code <strong>automatically</strong> and kept up to date by the app.</p>
-      <div class="skill">
-        <div class="skill-head">
-          <code>newspack-shots</code>
-          <span>the skill and the MCP server share the name · installed at <code>~/.claude/skills/newspack-shots/</code></span>
+      <p>Newspack Shots isn't just a screenshot app for people. It's also an MCP server, so the AI agents you work with take screenshots through the <strong>same styling engine you do</strong>.</p>
+      <p>You press <kbd>⌃⇧2</kbd>; your agent calls a tool. The results are <strong>pixel-identical</strong>. Docs, P2 posts, and help pages stay visually consistent no matter who, or what, captured them.</p>
+      <p>It comes with a <strong>skill</strong>: the team's screenshot playbook of canonical capture sizes, the website recipe, and how to annotate. The app installs it for Claude&nbsp;Code <strong>automatically</strong> at <code>~/.claude/skills/newspack-shots/</code> and keeps it up to date.</p>
+      <p>These are the MCP tools the app hands your agent:</p>
+      <div class="features tools">
+        <div class="feature lead">
+          <h3><code>newspack-shots</code></h3>
+          <p>The skill and the MCP server share the name.</p>
         </div>
-        <ul class="tools">
-          <li><code>capture_fullscreen</code><span>styled full-screen shot, saved and ready</span></li>
-          <li><code>capture_window</code><span>a named app's window, true corners and shadow</span></li>
-          <li><code>capture_region</code><span>an exact pixel region on a 3:2 canvas</span></li>
-          <li><code>capture_scrolling</code><span>auto-scrolls a region and stitches it into one tall shot</span></li>
-          <li><code>style_video</code><span>brands a workflow video agents record in a background browser — hands off your screen</span></li>
-          <li><code>video_frames</code><span>extracts stills from a recording so agents can verify what it shows</span></li>
-          <li><code>style_image</code><span>brand any existing image — how agents style website captures</span></li>
-          <li><code>annotate_image</code><span>arrows, rectangles, spotlights, counters — and pixelate, to redact secrets</span></li>
-          <li><code>compose_grid</code><span>lays 2–12 shots into one styled masonry grid — same padding, background, corners</span></li>
-          <li><code>read_text</code><span>OCR a screen region — read dialogs and errors, nothing saved</span></li>
-          <li><code>list_windows</code><span>what's capturable, so agents don't guess window names</span></li>
-        </ul>
+        <div class="feature"><h3><code>annotate_image</code></h3><p>Arrows, rectangles, spotlights, counters, pixelate to redact.</p></div>
+        <div class="feature"><h3><code>capture_fullscreen</code></h3><p>Styled full-screen shot, saved and ready.</p></div>
+        <div class="feature"><h3><code>capture_region</code></h3><p>An exact pixel region on a 3:2 canvas.</p></div>
+        <div class="feature"><h3><code>capture_scrolling</code></h3><p>Auto-scrolls a region and stitches it into one tall shot.</p></div>
+        <div class="feature"><h3><code>capture_window</code></h3><p>A named app's window, true corners and shadow.</p></div>
+        <div class="feature"><h3><code>compose_grid</code></h3><p>Lays 2 to 12 shots into one styled masonry grid: same padding, background, corners.</p></div>
+        <div class="feature"><h3><code>list_windows</code></h3><p>What's capturable, so agents don't guess window names.</p></div>
+        <div class="feature"><h3><code>read_text</code></h3><p>OCR a screen region to read dialogs and errors. Nothing saved.</p></div>
+        <div class="feature"><h3><code>style_image</code></h3><p>Brands any existing image, the way agents style website captures.</p></div>
+        <div class="feature"><h3><code>style_video</code></h3><p>Brands a workflow video agents record in a background browser.</p></div>
+        <div class="feature"><h3><code>video_frames</code></h3><p>Extracts stills from a recording so agents can verify what it shows.</p></div>
       </div>
-      <p class="setup">No setup: the app installs the skill and registers the MCP server for Claude&nbsp;Code <strong>on first launch</strong> — toggle it in Settings → General. See the <a href="https://github.com/thomasguillot/newspack-shots-releases#for-ai-agents-mcp">README</a> for details.</p>
+      <p class="setup">No setup: the app installs the skill and registers the MCP server for Claude&nbsp;Code <strong>on first launch</strong>. Toggle it in Settings → General. See the <a href="https://github.com/thomasguillot/newspack-shots-releases#for-ai-agents-mcp">README</a> for details.</p>
     </div>
   </section>
 
@@ -381,15 +374,15 @@
       <li><strong>Download</strong> the DMG and drag <strong>Newspack Shots</strong> onto <strong>Applications</strong>.</li>
       <li>The app is unsigned, so macOS blocks it once: double-click it, click <strong>Done</strong>, then allow it under <strong>System Settings → Privacy&nbsp;&amp;&nbsp;Security → Open Anyway</strong>.</li>
       <li>Trigger your first capture and grant <strong>Screen Recording</strong>, then quit and relaunch the app once.</li>
-      <li>Working with AI agents? Nothing to do — the app registers the MCP server and installs the team skill for Claude&nbsp;Code automatically (opt out in Settings → General).</li>
-      <li>That's it — captures land styled, saved, and on your clipboard.</li>
+      <li>Working with AI agents? Nothing to do: the app registers the MCP server and installs the team skill for Claude&nbsp;Code automatically (opt out in Settings → General).</li>
+      <li>That's it. Captures land styled, saved, and on your clipboard.</li>
     </ol>
   </section>
 
   </main>
 
   <footer>
-    <p>Screenshots and recordings never leave your Mac — no cloud, no upload, no analytics.</p>
+    <p>Screenshots and recordings never leave your Mac. No cloud, no upload, no analytics.</p>
     <p>Made for the Newspack team ·
       <a href="https://github.com/thomasguillot/newspack-shots-releases/releases">All releases &amp; checksums</a> ·
       <a href="https://github.com/thomasguillot/newspack-shots-releases#readme">README</a>
