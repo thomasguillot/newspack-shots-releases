@@ -133,6 +133,8 @@
     text-align: center;
     margin-bottom: 40px;
   }
+  .lead-in { text-align: center; color: var(--primary-050); margin: 0 auto 40px; }
+  h2:has(+ .lead-in) { margin-bottom: 12px; }
   .features {
     --grid-w: min(1240px, calc(100vw - 48px));
     width: var(--grid-w);
@@ -183,7 +185,7 @@
 
   /* Humans & agents */
   .duo { max-width: 44em; margin: 0 auto; text-align: center; }
-  .duo p { color: var(--primary-050); margin-bottom: 16px; }
+  .duo > p { color: var(--primary-050); margin-bottom: 16px; }
   .duo strong { color: var(--neutral-0); }
   .duo .setup { font-size: 0.9rem; color: var(--primary-200); }
 
@@ -266,6 +268,7 @@
 
   <section>
     <h2>Capture or record. It's already styled.</h2>
+    <p class="lead-in">This is what you get out of the box:</p>
     <div class="features">
       <div class="feature">
         <h3>On brand, automatically</h3>
@@ -296,6 +299,7 @@
 
   <section>
     <h2>Nine keys to know</h2>
+    <p class="lead-in">Hold <kbd>⌃⇧</kbd>, pick a number:</p>
     <div class="features">
       <div class="feature">
         <h3><kbd>⌃⇧1</kbd> Full screen</h3>
