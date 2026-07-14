@@ -35,12 +35,13 @@ Screenshots never leave your Mac — no cloud, no upload, no analytics. The upda
 
 ## For AI agents (MCP)
 
-The app doubles as an MCP server, so agents produce screenshots pixel-identical to yours. After installing the app (and granting Screen Recording), setup is automatic: on first launch it installs the team screenshot skill for Claude Code and registers the MCP server, keeping both up to date. It's on by default — toggle it under **Settings → General → "Set up AI agents"**.
+The app doubles as an MCP server, so agents produce screenshots pixel-identical to yours. After installing the app (and granting Screen Recording), setup is automatic: on first launch it installs the team screenshot skill and registers the MCP server for Claude Code and OpenAI Codex, keeping everything up to date. Installed an agent CLI later? Open the app's Settings once (or relaunch it) and it wires itself up. It's on by default — toggle it under **Settings → General → "Set up AI agents"**.
 
 Using another MCP client? It's a standard stdio server — register it manually:
 
 ```sh
 claude mcp add newspack-shots -- "/Applications/Newspack Shots.app/Contents/MacOS/NewspackShots" --mcp
+codex mcp add newspack-shots -- "/Applications/Newspack Shots.app/Contents/MacOS/NewspackShots" --mcp
 ```
 
 ### Tools
