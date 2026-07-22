@@ -11,6 +11,7 @@
 <meta property="og:url" content="https://thomasguillot.github.io/newspack-shots-releases/">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/icon.png">
+<script>document.documentElement.className += " js";</script>
 <style>
   @font-face {
     font-family: "Inter";
@@ -85,11 +86,6 @@
   }
 
   /* Hero shot — breaks out wider than the text column */
-  @property --shot-angle {
-    syntax: "<angle>";
-    inherits: false;
-    initial-value: 0deg;
-  }
   .shot {
     --shot-w: min(1240px, calc(100vw - 48px));
     position: relative;
@@ -102,27 +98,170 @@
     box-shadow: 0 30px 80px rgba(0, 5, 14, 0.65),
                 0 10px 28px rgba(0, 5, 14, 0.50);
   }
-  .shot::before {
-    content: "";
+  /* The canvas replays the app's own recipe (border 128, radius 10, the
+     two fixed shadow layers, 3:2 canvas) for the canonical 1512×982
+     capture, expressed in container units so it holds at any width:
+     canvas 1857×1238, image 1512/1857, 1cqw = 18.57 spec px. */
+  .canvas {
+    position: relative;
+    aspect-ratio: 1857 / 1238;
+    background: var(--cobalt-90);
+    border-radius: 7px;
+    overflow: hidden;
+    container-type: inline-size;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+  .canvas img {
+    width: 81.422%;
+    height: auto;
+    display: block;
+    border-radius: 0.5385cqw;
+    box-shadow: 0 0 1.077cqw rgba(0, 0, 0, 0.10),
+                0 1.3463cqw 1.6155cqw rgba(0, 0, 0, 0.15);
+    transition: transform 1100ms cubic-bezier(0.16, 1, 0.3, 1),
+                border-radius 1100ms cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 1100ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  /* Raw start state (scale 1238/982 covers the canvas edge-to-edge);
+     only with JS running, so the no-JS page rests on the styled shot. */
+  .js .shot:not(.styled) .canvas img {
+    transform: scale(1.2607);
+    border-radius: 0;
+    box-shadow: 0 0 1.077cqw rgba(0, 0, 0, 0),
+                0 1.3463cqw 1.6155cqw rgba(0, 0, 0, 0);
+  }
+  /* The capture beat: region selection chrome matching the app's overlay
+     (black 25% dim, 1px white border, white-on-black size label), then a
+     shutter flash before the style lands. */
+  .capture { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+  .selecting .capture { opacity: 1; }
+  .select {
     position: absolute;
-    inset: -2px;
-    border-radius: 12px;
-    padding: 2px;
-    background: conic-gradient(from var(--shot-angle),
-      transparent 0%, transparent 72%,
-      rgba(255, 255, 255, 0.75) 90%,
-      transparent 100%);
-    -webkit-mask: linear-gradient(#FFF 0 0) content-box, linear-gradient(#FFF 0 0);
-    -webkit-mask-composite: xor;
-    mask: linear-gradient(#FFF 0 0) content-box, linear-gradient(#FFF 0 0);
-    mask-composite: exclude;
-    animation: shot-light 6s linear infinite;
+    left: 7%; top: 10%; width: 0; height: 0;
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 0 250cqw rgba(0, 0, 0, 0.25);
+    transition: left 1400ms cubic-bezier(0.5, 0, 0.2, 1),
+                top 1400ms cubic-bezier(0.5, 0, 0.2, 1),
+                width 1400ms cubic-bezier(0.5, 0, 0.2, 1),
+                height 1400ms cubic-bezier(0.5, 0, 0.2, 1);
+  }
+  .selecting .select { left: 0; top: 0; width: 100%; height: 100%; }
+  .size {
+    position: absolute;
+    right: 10px; bottom: 8px;
+    font-size: 11px; line-height: 1.6;
+    white-space: nowrap;
+    color: var(--neutral-0);
+    background: rgba(0, 0, 0, 0.65);
+    border-radius: 4px;
+    padding: 1px 8px;
+    opacity: 0;
+    transition: opacity 200ms ease 250ms;
+  }
+  .selecting .size { opacity: 1; }
+  .flashing .select { opacity: 0; transition: opacity 120ms ease; }
+  .flash { position: absolute; inset: 0; background: var(--neutral-0); opacity: 0; }
+  .flashing .flash { animation: shutter 300ms ease-out; }
+  @keyframes shutter {
+    0% { opacity: 0; }
+    18% { opacity: 0.9; }
+    100% { opacity: 0; }
+  }
+  .styled .capture { opacity: 0; }
+  /* The spotlight beat: black 45% dim over the whole image except the
+     spotlit rect (sharp corners), clipped to the image like the app's. */
+  .spotlayer {
+    position: absolute;
+    left: 9.289%; top: 10.339%;
+    width: 81.422%; height: 79.322%;
+    border-radius: 0.5385cqw;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 400ms ease;
     pointer-events: none;
   }
-  @keyframes shot-light {
-    to { --shot-angle: 360deg; }
+  .spotlighting .spotlayer { opacity: 1; }
+  .spot {
+    position: absolute;
+    left: 8.93%; top: 0.81%;
+    width: 15.21%; height: 6.11%;
+    box-shadow: 0 0 0 250cqw rgba(0, 0, 0, 0.45);
   }
-  .shot img { width: 100%; height: auto; display: block; border-radius: 7px; }
+  /* The annotation beat: a real arrow (3pt stroke, 13pt open head) and a
+     real caption chip (16pt Inter Medium on black 90%, padding 16/8,
+     radius 4) drawn in capture coordinates over the styled shot. */
+  .anno {
+    position: absolute;
+    left: 9.289%; top: 10.339%;
+    width: 81.422%; height: 79.322%;
+    opacity: 0;
+    transition: opacity 400ms ease;
+    pointer-events: none;
+  }
+  .counting .anno, .annotating .anno { opacity: 1; }
+  /* Counter badges: radius-14 disc in the annotation color, 16pt centered
+     number, dark text on emerald per the app's contrast rule. */
+  .cnt {
+    position: absolute;
+    width: 1.5078cqw; height: 1.5078cqw;
+    border-radius: 50%;
+    background: var(--secondary-50);
+    color: var(--neutral-90);
+    font-size: 0.8616cqw;
+    line-height: 1;
+    font-weight: 600;
+    display: grid;
+    place-items: center;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+  }
+  .counting .cnt-1 { animation: cpop 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  .counting .cnt-2 { animation: cpop 250ms cubic-bezier(0.16, 1, 0.3, 1) 300ms forwards; }
+  .counting .cnt-3 { animation: cpop 250ms cubic-bezier(0.16, 1, 0.3, 1) 600ms forwards; }
+  @keyframes cpop {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+  .cnt-1 { left: 24.8%; top: 3.87%; }
+  .cnt-2 { left: 67.1%; top: 6.52%; }
+  .cnt-3 { left: 63.6%; top: 65.4%; }
+  .anno svg { width: 100%; height: 100%; display: block; }
+  .anno path, .anno rect {
+    fill: none;
+    stroke: var(--secondary-50);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .anno .box { stroke-dasharray: 100; stroke-dashoffset: 100; }
+  .annotating .box { animation: draw 600ms cubic-bezier(0.5, 0, 0.2, 1) forwards; }
+  .anno .shaft { stroke-dasharray: 185; stroke-dashoffset: 185; }
+  .annotating .shaft { animation: draw 400ms cubic-bezier(0.16, 1, 0.3, 1) 500ms forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .anno .head { opacity: 0; }
+  .annotating .head { animation: appear 150ms ease-out 860ms forwards; }
+  .anno .chip {
+    position: absolute;
+    left: 35.6%; top: 70.3%;
+    transform: translateY(-50%);
+    font-size: 0.8616cqw;
+    line-height: 1.5;
+    font-weight: 500;
+    white-space: nowrap;
+    color: var(--neutral-0);
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 0.2154cqw;
+    padding: 0.4308cqw 0.8616cqw;
+    opacity: 0;
+  }
+  .annotating .chip { animation: pop 250ms cubic-bezier(0.16, 1, 0.3, 1) 1050ms forwards; }
+  @keyframes appear { to { opacity: 1; } }
+  @keyframes pop {
+    from { opacity: 0; transform: translateY(-50%) scale(0.9); }
+    to { opacity: 1; transform: translateY(-50%) scale(1); }
+  }
 
   /* Sections */
   section { margin-bottom: 96px; }
@@ -244,7 +383,7 @@
   a { color: var(--secondary-50); }
   @media (prefers-reduced-motion: reduce) {
     .download { transition: none; }
-    .shot::before { animation: none; }
+    .canvas img { transition: none; }
     .feature { transition: none; }
     .feature:hover { transform: none; }
   }
@@ -263,8 +402,26 @@
 
   <main>
 
-  <div class="shot">
-    <img src="assets/hero.png" alt="newspack.com styled by Newspack Shots: Cobalt background, padding, rounded corners, soft shadow">
+  <div class="shot" id="shot" title="Replay">
+    <div class="canvas">
+      <img src="assets/hero-raw.png" alt="A raw newspack.com screenshot getting the Newspack Shots treatment: Cobalt background, padding, rounded corners, soft shadow">
+      <div class="capture" aria-hidden="true">
+        <div class="select"><span class="size"></span></div>
+        <div class="flash"></div>
+      </div>
+      <div class="spotlayer" aria-hidden="true"><div class="spot"></div></div>
+      <div class="anno" aria-hidden="true">
+        <svg viewBox="0 0 1512 982" preserveAspectRatio="none">
+          <rect class="box" x="133" y="121" width="757" height="294" rx="4" pathLength="100"/>
+          <path class="shaft" d="M520 690 L340 650"/>
+          <path class="head" d="M347 661 L340 650 L351 643"/>
+        </svg>
+        <span class="chip">Annotate anything</span>
+        <span class="cnt cnt-1">1</span>
+        <span class="cnt cnt-2">2</span>
+        <span class="cnt cnt-3">3</span>
+      </div>
+    </div>
   </div>
 
   <section>
@@ -400,6 +557,42 @@
       if (rel.tag_name) document.getElementById("version").textContent = rel.tag_name.replace(/^v/, "");
     })
     .catch(function () { /* static fallback already in the markup */ });
+
+  (function () {
+    var shot = document.getElementById("shot");
+    var img = shot.querySelector("img");
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      shot.classList.add("styled");
+      return;
+    }
+    var canvas = shot.querySelector(".canvas");
+    var select = shot.querySelector(".select");
+    var size = shot.querySelector(".size");
+    var timers = [];
+    var sizeLoop = function () {
+      if (shot.classList.contains("styled")) return;
+      var c = canvas.getBoundingClientRect();
+      var s = select.getBoundingClientRect();
+      size.textContent = Math.round(s.width / c.width * 1512) + " × " + Math.round(s.height / c.height * 982);
+      requestAnimationFrame(sizeLoop);
+    };
+    var play = function () {
+      timers.forEach(clearTimeout);
+      shot.classList.remove("selecting", "flashing", "styled", "spotlighting", "counting", "annotating");
+      void shot.offsetWidth; /* commit the raw state before replaying */
+      timers = [
+        setTimeout(function () { shot.classList.add("selecting"); sizeLoop(); }, 450),
+        setTimeout(function () { shot.classList.add("flashing"); }, 2100),
+        setTimeout(function () { shot.classList.add("styled"); }, 2250),
+        setTimeout(function () { shot.classList.add("spotlighting"); }, 3600),
+        setTimeout(function () { shot.classList.add("counting"); }, 4600),
+        setTimeout(function () { shot.classList.add("annotating"); }, 5700)
+      ];
+    };
+    if (img.complete) play();
+    else img.addEventListener("load", play);
+    shot.addEventListener("click", play);
+  })();
 
   document.querySelectorAll(".feature").forEach(function (tile) {
     tile.addEventListener("pointermove", function (e) {
