@@ -2,7 +2,7 @@
 
 **→ [Download page](https://thomasguillot.github.io/newspack-shots-releases/)** — always points at the latest release.
 
-A native macOS menu-bar screenshot and screen-recording app for the Newspack team. Every capture is automatically styled to the brand standard — Cobalt background, border, rounded corners, soft shadow — and an MCP server lets AI agents produce pixel-identical output.
+A native macOS menu-bar screenshot and screen-recording app for the Newspack team. Every capture comes out already styled — border, background, rounded corners, soft shadow, in your pick of five built-in styles or one of your own — and an MCP server lets AI agents produce pixel-identical output.
 
 **Requires macOS 26 (Tahoe) or later, Apple Silicon.**
 
@@ -28,6 +28,7 @@ Upgrading? Just replace the app in Applications — permissions stay granted. Ev
 
 - **⌃⇧1** full screen (with a display picker on multi-monitor setups; clean desktop by default — icons hidden, wallpaper replaced by the brand background) · **⌃⇧2** window (hover, ⇥ to cycle stacks, click) · **⌃⇧3** region (free drag with a pixel-precision magnifier; hold Space mid-drag to reposition, tap it to flip to the window picker and back) · **⌃⇧4** Timed Capture (select a region, then a countdown you can pause — stage open menus and other transient UI) · **⌃⇧5** Scrolling Capture (select the scrolling content, scroll — or let it auto-scroll — and get one tall stitched shot) · **⌃⇧6** Capture Text (OCR to clipboard, nothing saved) · **⌃⇧7** Record Screen (select a region or press Space for a window take, stage during the countdown, and get a styled 16:9 MP4 — clicks ripple in brand color, and the preview's scissors trim it) · **⌃⇧0** All-In-One (a floating toolbar with every capture mode plus Settings)
 - Instant auto-save to your folder + clipboard, with a quick preview bottom-left — bottom-right if your Dock is on the left — that tidies itself (previews slide away after a minute; the stack never outgrows your screen) — annotate only when you want to (zoom and pan like Preview — pinch, ⌘+/⌘−, ⌘0 actual size, ⌘9 fit — flip any shot between the 3:2 canvas and its own shape, then arrows, rectangles, spotlight, numbered counters, and pixelate to redact emails, keys, and customer data)
+- **Styles** — the look is a switchable style: **Primary Light**, **Primary**, **Primary Dark** (the default), **Neutral Light**, and **Neutral Dark** ship built in, and you can duplicate and tune your own in Settings; switch from the menu bar's **Style** submenu and every capture, recording, and grid follows
 - **Style existing files** — **Style an Image…** and **Style a Video…** in the menu, or Finder's **Open With → Newspack Shots**, give any PNG/JPEG or MP4/MOV the house look (videos open in the trimmer, so you can cut the ends in the same pass); nothing is written until you save — Save overwrites the original, Save As… writes a copy. Files the app already styled reopen as saved — never a second frame
 - **Make a grid** — **Make a Grid…** in the menu combines 2–12 images into one styled masonry grid: live preview, 2–6 columns, drag tiles to reorder; Save writes a new file, your originals untouched — the app's own shots are un-styled first so the grid restyles them as one
 - **Auto-updates** — the app checks this repo for new versions after launch and installs them in place (toggle in Settings, or **Check for Updates…** in the menu)
@@ -49,19 +50,19 @@ codex mcp add newspack-shots -- "/Applications/Newspack Shots.app/Contents/MacOS
 
 | Tool | What it does |
 |---|---|
-| `capture_fullscreen(ratio_canvas?)` | Styled shot of the main display |
-| `capture_window(app, title_contains?, ratio_canvas?)` | Styled shot of a named app's window — no interaction needed |
-| `capture_region(x, y, width, height, ratio_canvas?)` | Styled shot of exact screen coordinates (output canvas expands to 3:2 unless `ratio_canvas: false`) |
-| `capture_scrolling(x, y, width, height, max_seconds?, ratio_canvas?)` | Auto-scrolls a region and stitches the frames into one tall styled shot (needs the Accessibility permission; falls back to a single frame without it) |
-| `style_video(input_path, output_path?)` | Apply the Newspack style to a video — a 16:9 brand canvas around workflow recordings agents make in a background browser (hands off your screen), now with intro/chapter/outro title cards, timed captions, and brand click ripples |
+| `capture_fullscreen(ratio_canvas?, style?)` | Styled shot of the main display |
+| `capture_window(app, title_contains?, ratio_canvas?, style?)` | Styled shot of a named app's window — no interaction needed |
+| `capture_region(x, y, width, height, ratio_canvas?, style?)` | Styled shot of exact screen coordinates (output canvas expands to 3:2 unless `ratio_canvas: false`) |
+| `capture_scrolling(x, y, width, height, max_seconds?, ratio_canvas?, style?)` | Auto-scrolls a region and stitches the frames into one tall styled shot (needs the Accessibility permission; falls back to a single frame without it) |
+| `style_video(input_path, output_path?, style?)` | Apply the Newspack style to a video — a 16:9 brand canvas around workflow recordings agents make in a background browser (hands off your screen), now with intro/chapter/outro title cards, timed captions, and brand click ripples |
 | `video_frames(path, times)` | Extracts still frames from a recording as PNGs so agents can verify what it actually shows |
-| `style_image(input_path, output_path?, ratio_canvas?)` | Apply the Newspack style to any existing image — the workhorse for browser screenshots |
+| `style_image(input_path, output_path?, ratio_canvas?, style?)` | Apply the Newspack style to any existing image — the workhorse for browser screenshots |
 | `annotate_image(input_path, annotations, output_path?)` | Draw brand-styled arrows, rectangles, spotlight, numbered counters — and pixelate, an irreversible mosaic for redacting secrets — via JSON |
-| `compose_grid(input_paths, columns?, output_path?, ratio_canvas?)` | Lay 2–12 raw captures into one styled masonry grid (reading order, columns auto or 2–6) — same padding, background, and rounded corners as a single shot |
+| `compose_grid(input_paths, columns?, output_path?, ratio_canvas?, style?)` | Lay 2–12 raw captures into one styled masonry grid (reading order, columns auto or 2–6) — same padding, background, and rounded corners as a single shot |
 | `read_text(x?, y?, width?, height?)` | OCR a screen region (or the whole display) and return the text in reading order — nothing styled or saved |
 | `list_windows()` | List capturable windows (app, title, size, position) so agents don't guess `capture_window` arguments |
 
-Capture and styling tools also take an optional `ratio_canvas` — `true` forces the 3:2 brand canvas, `false` keeps the capture's own shape with even padding. Capture, style, and annotate tools return the saved file's path; capture/style tools also report the canvas size and where the original capture sits on it, so you can convert capture coordinates into canvas coordinates when annotating.
+Capture and styling tools also take an optional `ratio_canvas` — `true` forces the 3:2 brand canvas, `false` keeps the capture's own shape with even padding. They also take an optional `style` — a built-in (Primary Light, Primary, Primary Dark, Neutral Light, Neutral Dark) or one of your saved styles, by name, applied to that call only. Capture, style, and annotate tools return the saved file's path; capture/style tools also report the canvas size and where the original capture sits on it, so you can convert capture coordinates into canvas coordinates when annotating.
 
 ### Website screenshots (recommended recipe)
 
