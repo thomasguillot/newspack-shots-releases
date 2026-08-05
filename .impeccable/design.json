@@ -193,7 +193,7 @@
       {
         "name": "stagger",
         "value": "60ms steps across grid children, 500ms ease-quart, once on scroll entry",
-        "purpose": "Callouts, keycaps, and the capture stack rising in sequence."
+        "purpose": "Callouts and keycaps rising in sequence."
       }
     ],
     "breakpoints": [
@@ -263,7 +263,7 @@
     "keyCharacteristics": [
       "Committed color: the cobalt wallpaper (lit top, deep floor, 5% film grain) carries roughly half the surface; windows are cobalt-tinted light; emerald is the only action color.",
       "Desktop-literal: menu bar anatomy (with a live clock), window chrome, and shadows follow macOS, not web convention.",
-      "Self-demonstrating: a display headline wearing the region-selection marquee, and a layered stack of real styled captures.",
+      "Self-demonstrating: a display headline wearing the region-selection marquee, and a real styled capture in the hero window.",
       "Extreme type scale: display at 5rem/800 against 0.85rem labels; scale does the drama, not effects.",
       "Responsive motion, never staged: hover, press, and one-time staggered scroll reveals; nothing auto-plays."
     ],

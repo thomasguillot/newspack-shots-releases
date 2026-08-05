@@ -100,7 +100,7 @@ The register is product: the page exists so a teammate can grab the DMG and clea
 **Key Characteristics:**
 - Committed color: the cobalt wallpaper (Primary 600 falling to Primary 900, 5% film grain) carries roughly half the surface; windows are cobalt-tinted light; emerald is the only action color.
 - Desktop-literal: menu bar anatomy (with a live clock), window chrome, and shadows follow macOS, not web convention.
-- Self-demonstrating: a display headline wearing the region-selection marquee, and a layered stack of real styled captures.
+- Self-demonstrating: a display headline wearing the region-selection marquee, and a real styled capture in the hero window.
 - Extreme type scale: display at 5rem/800 against 0.85rem labels; scale does the drama, not effects.
 - Responsive motion, never staged: hover, press, and one-time staggered scroll reveals; nothing auto-plays.
 
@@ -170,9 +170,6 @@ Tactile and confident. Components either sit directly on the wallpaper (callouts
 - 12px radius, `--surface` body, `--surface-chrome` titlebar with traffic lights (#FF5F57 / #FEBC2E / #28C840) and a centered 0.8rem title.
 - Hero window: contains the Primary 900 canvas replaying the app's styling recipe with static annotation marks; clicking replays the annotation draw (box, arrow, chip, counters).
 - Content windows: agent session (the MCP toolbox as three labeled clusters: Capture / Style &amp; compose / Annotate &amp; verify, each tool's mono cobalt name above its description, no chip boxes), install (numbered steps).
-
-### The Capture Stack (signature)
-- The hero window sits in a `.desk` layer with two smaller capture windows (crops of the same real screenshot on Primary 900 canvases) peeking from behind at offset positions, breaking the container toward full-bleed. They stagger in behind the main window (140/240ms delays) and hide below 1080px.
 
 ### The Selection Marquee Headline (signature)
 - Part of the display headline sits inside the app's region-selection chrome: a 1px white box and a size label (black 65% chip) that reports the marquee's real on-screen size via JS. The typography wears the product.

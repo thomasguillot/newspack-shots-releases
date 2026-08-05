@@ -231,45 +231,14 @@
 
   /* ---------- The desk: a stack of capture windows ---------- */
   .desk {
+    width: min(1120px, calc(100vw - 48px));
     position: relative;
-    margin-top: clamp(56px, 7vw, 88px);
+    margin: clamp(56px, 7vw, 88px) auto 0;
   }
   .hero-window {
-    --shot-w: min(1120px, calc(100vw - 48px));
-    width: var(--shot-w);
-    margin: 0 auto;
     position: relative;
     z-index: 2;
   }
-  .aux {
-    position: absolute;
-    z-index: 1;
-    filter: brightness(0.96);
-  }
-  .aux .titlebar { height: 32px; }
-  .aux .lights i { width: 10px; height: 10px; }
-  .aux-canvas { background: var(--primary-900); padding: 9%; }
-  .aux-canvas .crop {
-    border-radius: 6px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.10), 0 12px 16px rgba(0, 0, 0, 0.15);
-    background-image: url("assets/hero-raw.png");
-    background-repeat: no-repeat;
-  }
-  .aux-1 {
-    width: clamp(260px, 24vw, 340px);
-    left: max(12px, calc(50% - 50vw + 3vw));
-    bottom: -56px;
-    box-shadow: 0 16px 40px rgba(0, 10, 28, 0.35), 0 2px 6px rgba(0, 10, 28, 0.25);
-  }
-  .aux-1 .crop { aspect-ratio: 16 / 10; background-size: 260% auto; background-position: 14% 62%; }
-  .aux-2 {
-    width: clamp(220px, 20vw, 300px);
-    right: max(12px, calc(50% - 50vw + 3.5vw));
-    top: -48px;
-    box-shadow: 0 16px 40px rgba(0, 10, 28, 0.35), 0 2px 6px rgba(0, 10, 28, 0.25);
-  }
-  .aux-2 .crop { aspect-ratio: 16 / 11; background-size: 230% auto; background-position: 50% 86%; }
-  @media (max-width: 1080px) { .aux { display: none; } }
   /* The canvas replays the app's own recipe (border 128, radius 10, two
      fixed shadow layers, 3:2 canvas) for the canonical 1512×982 capture,
      in container units so it holds at any width. */
@@ -537,8 +506,8 @@
     transition: opacity 600ms var(--ease-quart), transform 600ms var(--ease-quart);
   }
   /* grid children stagger in behind their section */
-  .js .reveal .callout, .js .reveal .key, .js .reveal .aux { opacity: 0; transform: translateY(16px); }
-  .js .reveal.in .callout, .js .reveal.in .key, .js .reveal.in .aux {
+  .js .reveal .callout, .js .reveal .key { opacity: 0; transform: translateY(16px); }
+  .js .reveal.in .callout, .js .reveal.in .key {
     opacity: 1; transform: none;
     transition: opacity 500ms var(--ease-quart), transform 500ms var(--ease-quart);
   }
@@ -550,8 +519,6 @@
   .js .reveal.in :is(.callout, .key):nth-child(7) { transition-delay: 360ms; }
   .js .reveal.in :is(.callout, .key):nth-child(8) { transition-delay: 420ms; }
   .js .reveal.in :is(.callout, .key):nth-child(9) { transition-delay: 480ms; }
-  .js .reveal.in .aux-1 { transition-delay: 140ms; }
-  .js .reveal.in .aux-2 { transition-delay: 240ms; }
 
   /* ---------- Responsive ---------- */
   @media (max-width: 900px) {
@@ -566,7 +533,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .js .reveal, .js .reveal .callout, .js .reveal .key, .js .reveal .aux {
+    .js .reveal, .js .reveal .callout, .js .reveal .key {
       opacity: 1; transform: none; transition: none;
     }
     .download, .keycap, .mb-download, .callout .num { transition: none; }
@@ -605,14 +572,6 @@
 </header>
 
 <div class="desk reveal">
-  <div class="window aux aux-1" aria-hidden="true">
-    <div class="titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span></div>
-    <div class="aux-canvas"><div class="crop"></div></div>
-  </div>
-  <div class="window aux aux-2" aria-hidden="true">
-    <div class="titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span></div>
-    <div class="aux-canvas"><div class="crop"></div></div>
-  </div>
   <div class="window hero-window" id="shot" title="Replay the annotations">
     <div class="titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="title">newspack.com, captured and styled</span></div>
     <div class="canvas">
