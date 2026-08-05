@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Newspack Shots: on-brand screenshots and recordings for humans and AI agents</title>
 <meta name="description" content="A macOS menu-bar app for the Newspack team. Every screenshot and screen recording comes out on brand, whether a human takes it or an AI agent does.">
 <meta property="og:title" content="Newspack Shots">
@@ -20,91 +20,155 @@
     font-display: swap;
   }
   :root {
-    /* brand.newspack.com/colors — full Primary (Cobalt), Secondary
-       (Emerald), and Neutral scales, site step names verbatim */
+    /* brand.newspack.com/colors — Primary (Cobalt), Secondary (Emerald),
+       Neutral scales, site step names verbatim */
     --primary-000: #DFE7F4;
     --primary-050: #BFCFE9;
     --primary-100: #9FB6DD;
-    --primary-200: #809ED2;
-    --primary-300: #6086C7;
     --primary-400: #406EBC;
     --primary-500: #2055B0;
     --primary-600: #003DA5;
     --primary-700: #00296E;
     --primary-800: #001F53;
     --primary-900: #001437;
-    --primary-1000: #000A1C;
-    --secondary-000: #EFF9F2;
-    --secondary-050: #DDF3E3;
-    --secondary-100: #C8ECD4;
-    --secondary-200: #B1E6C3;
-    --secondary-300: #95DFAF;
-    --secondary-400: #6FD898;
     --secondary-500: #26D07C;
-    --secondary-600: #1FB36A;
-    --secondary-700: #1BA25F;
-    --secondary-800: #178E53;
-    --secondary-900: #117644;
-    --secondary-1000: #09552F;
     --neutral-000: #FFFFFF;
-    --neutral-050: #F7F7F7;
-    --neutral-100: #F0F0F0;
-    --neutral-200: #E0E0E0;
     --neutral-300: #DDDDDD;
-    --neutral-400: #CCCCCC;
-    --neutral-500: #949494;
-    --neutral-600: #6C6C6C;
-    --neutral-700: #5D5D5D;
-    --neutral-800: #393939;
-    --neutral-900: #1E1E1E;
-    --neutral-1000: #000000;
-    --section-gap: clamp(48px, 6.4vw, 96px);
+    /* cobalt-tinted light surfaces for window interiors */
+    --surface: #F6F8FC;
+    --surface-chrome: #E9EEF6;
+    --ink: #001437;        /* headings on light */
+    --ink-soft: #43536F;   /* body on light */
+    --hairline: rgba(0, 20, 55, 0.12);
+    --menubar-h: 44px;
+    --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --section-gap: clamp(72px, 9vw, 144px);
+    --content-w: 1040px;
   }
   * { margin: 0; box-sizing: border-box; }
-  /* Viewport frame: 24px Primary 600 band with a 1px white hairline on
-     its inner edge; content scrolls beneath it. */
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    border: 24px solid var(--primary-600);
-    box-shadow: inset 0 0 0 1px var(--neutral-000);
-    pointer-events: none;
-    z-index: 100;
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--menubar-h) + 24px);
+    /* the desktop: cobalt wallpaper falling into a deep floor */
+    background: linear-gradient(180deg, var(--primary-600) 0%, var(--primary-900) 100%);
+    background-color: var(--primary-600);
   }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   body {
-    background: var(--primary-600);
+    background: transparent;
     color: var(--neutral-000);
     font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
-  h1, h2, h3 { text-wrap: pretty; }
-  p { text-wrap: balance; }
+  /* film grain on the wallpaper, beneath the content */
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: -1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.05;
+    pointer-events: none;
+  }
+  ::selection { background: var(--secondary-500); color: var(--primary-900); }
+  h1, h2, h3 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+  a { color: var(--secondary-500); }
+  :focus-visible { outline: 2px solid var(--neutral-000); outline-offset: 3px; border-radius: 2px; }
+  .window :focus-visible, .menubar :focus-visible { outline-color: var(--primary-600); }
 
-  /* Hero */
-  /* top padding = gap + the 25px frame (24px band + 1px hairline), so the
-     visual space below the frame matches the section gap */
-  header { text-align: center; padding: calc(var(--section-gap) + 25px) 0 var(--section-gap); }
-  .icon {
-    width: 64px;
-    height: 64px;
+  .skip {
+    position: absolute; left: 16px; top: -48px; z-index: 300;
+    background: var(--neutral-000); color: var(--primary-600);
+    padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 600;
+  }
+  .skip:focus { top: calc(var(--menubar-h) + 8px); }
+
+  /* ---------- Menu bar ---------- */
+  .menubar {
+    position: fixed; inset: 0 0 auto 0; z-index: 200;
+    height: var(--menubar-h);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px;
+    padding: 0 max(16px, env(safe-area-inset-left)) 0 max(16px, env(safe-area-inset-right));
+    background: rgba(246, 248, 252, 0.82);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    backdrop-filter: blur(20px) saturate(1.5);
+    border-bottom: 1px solid var(--hairline);
+    color: var(--ink);
+    font-size: 0.85rem;
+  }
+  .mb-left, .mb-right { display: flex; align-items: center; gap: 4px; min-width: 0; }
+  .mb-app {
+    display: flex; align-items: center; gap: 8px;
+    font-weight: 700; white-space: nowrap; margin-right: 8px;
+  }
+  .mb-app img { width: 20px; height: 20px; }
+  .mb-menus { display: flex; }
+  .mb-menus a {
+    color: inherit; text-decoration: none;
+    padding: 4px 12px; border-radius: 6px; white-space: nowrap;
+  }
+  .mb-menus a:hover { background: rgba(0, 61, 165, 0.10); }
+  .mb-menus a[aria-current] { background: var(--primary-600); color: var(--neutral-000); }
+  .mb-version { color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .mb-download {
+    background: var(--secondary-500); color: var(--primary-900);
+    font-weight: 600; text-decoration: none; white-space: nowrap;
+    padding: 4px 14px; border-radius: 999px; margin: 0 10px;
+  }
+  .mb-download:hover { filter: brightness(1.06); }
+  .mb-clock { font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    text-align: center;
+    padding: calc(var(--menubar-h) + clamp(48px, 7vw, 96px)) 24px 0;
+  }
+  .hero .icon {
+    width: 72px; height: 72px;
     filter: drop-shadow(0 10px 24px rgba(0, 10, 28, 0.45))
             drop-shadow(0 3px 9px rgba(0, 0, 0, 0.40));
   }
   h1 {
-    font-size: clamp(2.2rem, 5vw, 3.4rem);
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    margin-top: 8px;
-    line-height: 1.2;
+    font-size: clamp(2.6rem, 6.5vw, 5rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.08;
+    margin: 16px auto 0;
+    max-width: 15ch;
+  }
+  /* The region-selection marquee, dragged around the promise */
+  .mark {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+    padding: 0.02em 0.12em;
+  }
+  .mark .frame {
+    position: absolute; left: 0; top: 0;
+    width: 100%; height: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    pointer-events: none;
+  }
+  .mark.marking .dim { transition: none; }
+  .mark .dim {
+    position: absolute;
+    right: -4px; bottom: -34px;
+    font-size: 12px; line-height: 1.6;
+    font-weight: 500;
+    letter-spacing: 0;
+    color: var(--neutral-000);
+    background: rgba(0, 0, 0, 0.65);
+    border-radius: 4px;
+    padding: 1px 8px;
+    font-variant-numeric: tabular-nums;
   }
   .tagline {
     font-size: clamp(1.05rem, 2.5vw, 1.3rem);
     color: var(--primary-000);
-    max-width: 34em;
-    margin: 12px auto 36px;
+    max-width: 40em;
+    margin: 28px auto 36px;
   }
   .download {
     display: inline-block;
@@ -115,158 +179,123 @@
     padding: 14px 34px;
     border-radius: 999px;
     text-decoration: none;
-    transition: transform 120ms ease, box-shadow 120ms ease;
+    transition: transform 150ms var(--ease-quart), box-shadow 150ms var(--ease-quart);
   }
   .download:hover {
     transform: translateY(-1px);
     box-shadow: 0 6px 24px rgba(38, 208, 124, 0.35);
   }
+  .download:active { transform: translateY(0); }
   .requirements {
     margin-top: 16px;
     font-size: 0.85rem;
     color: var(--primary-100);
+    font-variant-numeric: tabular-nums;
   }
 
-  /* Hero shot — breaks out wider than the text column */
-  .shot {
-    --shot-w: min(1240px, calc(100vw - 96px)); /* clears the viewport frame */
-    position: relative;
-    width: var(--shot-w);
-    margin: 0 calc((100% - var(--shot-w)) / 2) var(--section-gap);
-    container-type: inline-size;
-    /* same 0.5385cqw radius as .canvas — cqw can't self-reference the
-       container, so it's spelled as a calc on the same width */
-    border-radius: calc(var(--shot-w) * 0.005385);
+  /* ---------- Windows ---------- */
+  .window {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 20, 55, 0.25);
+    box-shadow: 0 24px 60px rgba(0, 10, 28, 0.40), 0 3px 10px rgba(0, 10, 28, 0.25);
+    overflow: hidden;
+    color: var(--ink-soft);
   }
-  /* The canvas replays the app's own recipe (border 128, radius 10, the
-     two fixed shadow layers, 3:2 canvas) for the canonical 1512×982
-     capture, expressed in container units so it holds at any width:
-     canvas 1857×1238, image 1512/1857, 1cqw = 18.57 spec px. */
+  .titlebar {
+    display: flex; align-items: center;
+    height: 40px;
+    padding: 0 14px;
+    background: var(--surface-chrome);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .lights { display: flex; gap: 8px; }
+  .lights i { width: 12px; height: 12px; border-radius: 50%; }
+  .lights i:nth-child(1) { background: #FF5F57; }
+  .lights i:nth-child(2) { background: #FEBC2E; }
+  .lights i:nth-child(3) { background: #28C840; }
+  .titlebar .title {
+    flex: 1;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    padding: 0 12px;
+    /* optically recenter past the traffic lights */
+    margin-right: 52px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  @media (max-width: 560px) {
+    .titlebar .title { margin-right: 0; text-align: left; }
+  }
+
+  /* ---------- The desk: a stack of capture windows ---------- */
+  .desk {
+    position: relative;
+    margin-top: clamp(56px, 7vw, 88px);
+  }
+  .hero-window {
+    --shot-w: min(1120px, calc(100vw - 48px));
+    width: var(--shot-w);
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+  .aux {
+    position: absolute;
+    z-index: 1;
+    filter: brightness(0.96);
+  }
+  .aux .titlebar { height: 32px; }
+  .aux .lights i { width: 10px; height: 10px; }
+  .aux-canvas { background: var(--primary-900); padding: 9%; }
+  .aux-canvas .crop {
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.10), 0 12px 16px rgba(0, 0, 0, 0.15);
+    background-image: url("assets/hero-raw.png");
+    background-repeat: no-repeat;
+  }
+  .aux-1 {
+    width: clamp(260px, 24vw, 340px);
+    left: max(12px, calc(50% - 50vw + 3vw));
+    bottom: -56px;
+    box-shadow: 0 16px 40px rgba(0, 10, 28, 0.35), 0 2px 6px rgba(0, 10, 28, 0.25);
+  }
+  .aux-1 .crop { aspect-ratio: 16 / 10; background-size: 260% auto; background-position: 14% 62%; }
+  .aux-2 {
+    width: clamp(220px, 20vw, 300px);
+    right: max(12px, calc(50% - 50vw + 3.5vw));
+    top: -48px;
+    box-shadow: 0 16px 40px rgba(0, 10, 28, 0.35), 0 2px 6px rgba(0, 10, 28, 0.25);
+  }
+  .aux-2 .crop { aspect-ratio: 16 / 11; background-size: 230% auto; background-position: 50% 86%; }
+  @media (max-width: 1080px) { .aux { display: none; } }
+  /* The canvas replays the app's own recipe (border 128, radius 10, two
+     fixed shadow layers, 3:2 canvas) for the canonical 1512×982 capture,
+     in container units so it holds at any width. */
   .canvas {
     position: relative;
     aspect-ratio: 1857 / 1238;
     background: var(--primary-900);
-    border-radius: 0.5385cqw; /* the image's own styled radius */
-    overflow: hidden;
     container-type: inline-size;
     display: grid;
     place-items: center;
-    cursor: pointer;
   }
-  .canvas img {
+  .canvas > img {
     width: 81.422%;
     height: auto;
     display: block;
     border-radius: 0.5385cqw;
     box-shadow: 0 0 1.077cqw rgba(0, 0, 0, 0.10),
                 0 1.3463cqw 1.6155cqw rgba(0, 0, 0, 0.15);
-    transition: transform 1100ms cubic-bezier(0.16, 1, 0.3, 1),
-                border-radius 1100ms cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 1100ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  /* Raw start state (scale 1238/982 covers the canvas edge-to-edge);
-     only with JS running, so the no-JS page rests on the styled shot. */
-  .js .shot:not(.styled) .canvas img {
-    transform: scale(1.2607);
-    border-radius: 0;
-    box-shadow: 0 0 1.077cqw rgba(0, 0, 0, 0),
-                0 1.3463cqw 1.6155cqw rgba(0, 0, 0, 0);
-  }
-  /* The capture beat: region selection chrome matching the app's overlay
-     (black 25% dim, 1px white border, white-on-black size label), then a
-     shutter flash before the style lands. */
-  .capture { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
-  .selecting .capture { opacity: 1; }
-  .select {
-    position: absolute;
-    left: 7%; top: 10%; width: 0; height: 0;
-    border: 1px solid rgba(255, 255, 255, 0.95);
-    box-shadow: 0 0 0 250cqw rgba(0, 0, 0, 0.25);
-    transition: left 1400ms cubic-bezier(0.5, 0, 0.2, 1),
-                top 1400ms cubic-bezier(0.5, 0, 0.2, 1),
-                width 1400ms cubic-bezier(0.5, 0, 0.2, 1),
-                height 1400ms cubic-bezier(0.5, 0, 0.2, 1);
-  }
-  .selecting .select { left: 0; top: 0; width: 100%; height: 100%; }
-  .size {
-    position: absolute;
-    right: 10px; bottom: 8px;
-    font-size: 11px; line-height: 1.6;
-    white-space: nowrap;
-    color: var(--neutral-000);
-    background: rgba(0, 0, 0, 0.65);
-    border-radius: 4px;
-    padding: 1px 8px;
-    opacity: 0;
-    transition: opacity 200ms ease 250ms;
-  }
-  .selecting .size { opacity: 1; }
-  .flashing .select { opacity: 0; transition: opacity 120ms ease; }
-  .flash { position: absolute; inset: 0; background: var(--neutral-000); opacity: 0; }
-  .flashing .flash { animation: shutter 300ms ease-out; }
-  @keyframes shutter {
-    0% { opacity: 0; }
-    18% { opacity: 0.9; }
-    100% { opacity: 0; }
-  }
-  .styled .capture { opacity: 0; }
-  /* The spotlight beat: black 45% dim over the whole image except the
-     spotlit rect (sharp corners), clipped to the image like the app's. */
-  .spotlayer {
-    position: absolute;
-    left: 9.289%; top: 10.339%;
-    width: 81.422%; height: 79.322%;
-    border-radius: 0.5385cqw;
-    overflow: hidden;
-    opacity: 0;
-    transition: opacity 400ms ease;
-    pointer-events: none;
-  }
-  .spotlighting .spotlayer { opacity: 1; }
-  .spot {
-    position: absolute;
-    left: 8.93%; top: 0.81%;
-    width: 15.21%; height: 6.11%;
-    box-shadow: 0 0 0 250cqw rgba(0, 0, 0, 0.45);
-  }
-  /* The annotation beat: a real arrow (3pt stroke, 13pt open head) and a
-     real caption chip (16pt Inter Medium on black 90%, padding 16/8,
-     radius 4) drawn in capture coordinates over the styled shot. */
+  /* Static annotations in capture coordinates; a click replays the draw. */
   .anno {
     position: absolute;
     left: 9.289%; top: 10.339%;
     width: 81.422%; height: 79.322%;
-    opacity: 0;
-    transition: opacity 400ms ease;
     pointer-events: none;
   }
-  .counting .anno, .annotating .anno { opacity: 1; }
-  /* Counter badges: radius-14 disc in the annotation color, 16pt centered
-     number, dark text on emerald per the app's contrast rule. */
-  .cnt {
-    position: absolute;
-    width: 1.5078cqw; height: 1.5078cqw;
-    border-radius: 50%;
-    background: var(--secondary-500);
-    color: var(--neutral-900);
-    font-size: 0.8616cqw;
-    line-height: 1;
-    font-weight: 600;
-    display: grid;
-    place-items: center;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-  }
-  .counting .cnt-1 { animation: cpop 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-  .counting .cnt-2 { animation: cpop 250ms cubic-bezier(0.16, 1, 0.3, 1) 300ms forwards; }
-  .counting .cnt-3 { animation: cpop 250ms cubic-bezier(0.16, 1, 0.3, 1) 600ms forwards; }
-  @keyframes cpop {
-    from { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
-    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  }
-  .cnt-1 { left: 24.8%; top: 3.87%; }
-  .cnt-2 { left: 67.1%; top: 6.52%; }
-  .cnt-3 { left: 63.6%; top: 65.4%; }
   .anno svg { width: 100%; height: 100%; display: block; }
   .anno path, .anno rect {
     fill: none;
@@ -275,13 +304,6 @@
     stroke-linecap: round;
     stroke-linejoin: round;
   }
-  .anno .box { stroke-dasharray: 100; stroke-dashoffset: 100; }
-  .annotating .box { animation: draw 600ms cubic-bezier(0.5, 0, 0.2, 1) forwards; }
-  .anno .shaft { stroke-dasharray: 185; stroke-dashoffset: 185; }
-  .annotating .shaft { animation: draw 400ms cubic-bezier(0.16, 1, 0.3, 1) 500ms forwards; }
-  @keyframes draw { to { stroke-dashoffset: 0; } }
-  .anno .head { opacity: 0; }
-  .annotating .head { animation: appear 150ms ease-out 860ms forwards; }
   .anno .chip {
     position: absolute;
     left: 35.6%; top: 70.3%;
@@ -294,82 +316,108 @@
     background: rgba(0, 0, 0, 0.9);
     border-radius: 0.2154cqw;
     padding: 0.4308cqw 0.8616cqw;
-    opacity: 0;
   }
-  .annotating .chip { animation: pop 250ms cubic-bezier(0.16, 1, 0.3, 1) 1050ms forwards; }
-  @keyframes appear { to { opacity: 1; } }
+  .cnt {
+    position: absolute;
+    width: 1.5078cqw; height: 1.5078cqw;
+    border-radius: 50%;
+    background: var(--secondary-500);
+    color: var(--primary-900);
+    font-size: 0.8616cqw;
+    line-height: 1;
+    font-weight: 600;
+    display: grid;
+    place-items: center;
+    transform: translate(-50%, -50%);
+  }
+  .cnt-1 { left: 24.8%; top: 3.87%; }
+  .cnt-2 { left: 67.1%; top: 6.52%; }
+  .cnt-3 { left: 63.6%; top: 65.4%; }
+  .hero-window .canvas { cursor: pointer; }
+  .replaying .box {
+    stroke-dasharray: 100; stroke-dashoffset: 100;
+    animation: draw 600ms cubic-bezier(0.5, 0, 0.2, 1) forwards;
+  }
+  .replaying .shaft {
+    stroke-dasharray: 185; stroke-dashoffset: 185;
+    animation: draw 400ms var(--ease-expo) 500ms forwards;
+  }
+  .replaying .head { opacity: 0; animation: appear 150ms ease-out 860ms forwards; }
+  .replaying .chip { opacity: 0; animation: pop 250ms var(--ease-expo) 1050ms forwards; }
+  .replaying .cnt-1 { opacity: 0; animation: cpop 250ms var(--ease-expo) 1200ms forwards; }
+  .replaying .cnt-2 { opacity: 0; animation: cpop 250ms var(--ease-expo) 1400ms forwards; }
+  .replaying .cnt-3 { opacity: 0; animation: cpop 250ms var(--ease-expo) 1600ms forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes appear { from { opacity: 0; } to { opacity: 1; } }
   @keyframes pop {
     from { opacity: 0; transform: translateY(-50%) scale(0.9); }
     to { opacity: 1; transform: translateY(-50%) scale(1); }
   }
-
-  /* Sections */
-  main { margin-bottom: var(--section-gap); }
-  hr {
-    border: none;
-    border-top: 1px solid var(--neutral-000);
-    margin: var(--section-gap) calc(50% - 50vw); /* full-bleed */
+  @keyframes cpop {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+  /* ---------- Sections on the desktop ---------- */
+  main, .hero-window { position: relative; }
+  section {
+    max-width: var(--content-w);
+    margin: var(--section-gap) auto 0;
+    padding: 0 24px;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--neutral-000);
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 4px;
+    padding: 3px 10px;
+    margin-bottom: 16px;
   }
   h2 {
-    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
     font-weight: 700;
-    letter-spacing: -0.02em;
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  .lead-in { text-align: center; color: var(--primary-000); margin: 0 auto 40px; }
-  h2:has(+ .lead-in) { margin-bottom: 12px; }
-  .features {
-    --grid-w: min(1240px, calc(100vw - 96px)); /* clears the viewport frame */
-    width: var(--grid-w);
-    margin: 0 calc((100% - var(--grid-w)) / 2);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  .features.tools { grid-template-columns: repeat(4, 1fr); }
-  /* Nine-keys ticker: one slow, seamless row — two identical groups, the
-     track slides one group-width (-50%), pausing on hover. */
-  .ticker {
-    --grid-w: min(1240px, calc(100vw - 96px)); /* keeps the tile radius in sync */
-    width: 100vw;
-    margin: 0 calc(50% - 50vw);
-    overflow: hidden;
-    mask-image: linear-gradient(to right, transparent, #FFF 6%, #FFF 94%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, #FFF 6%, #FFF 94%, transparent);
-  }
-  .ticker-track {
-    display: flex;
-    width: max-content;
-    animation: ticker 60s linear infinite;
-  }
-  .ticker:hover .ticker-track { animation-play-state: paused; }
-  @keyframes ticker { to { transform: translateX(-50%); } }
-  .ticker-group {
-    display: flex;
-    gap: 40px;
-    padding-right: 40px; /* trailing gap so the loop point is seamless */
-    flex: none;
-  }
-  /* Ticker items are keycaps, not cards: a big pressable key, then the
-     label and description floating straight on the cobalt. */
-  .ticker .feature {
-    width: 400px;
-    flex: none;
-    background: none;
-    border-radius: 0;
-    padding: 8px 0; /* room for the keycap's pressed edge */
-  }
-  .ticker .feature h3 {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    font-size: 1.85rem;
+    letter-spacing: -0.025em;
     margin-bottom: 12px;
   }
-  .ticker .feature p { font-size: 1.3rem; color: var(--primary-000); }
-  .ticker kbd {
+  .lead-in { color: var(--primary-000); max-width: 58ch; margin-bottom: 48px; }
+
+  /* Features: annotation callouts pinned straight on the wallpaper */
+  .callouts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px 40px;
+  }
+  .callout { position: relative; padding: 4px 8px; }
+  .callout .num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--secondary-500);
+    color: var(--primary-900);
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: grid; place-items: center;
+    margin-bottom: 14px;
+    transition: transform 200ms var(--ease-quart);
+  }
+  @media (hover: hover) {
+    .callout:hover .num { transform: scale(1.2); }
+  }
+  .callout h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 6px; }
+  .callout p { font-size: 0.95rem; color: var(--primary-050); }
+  /* Shortcuts: keycaps on the desktop */
+  .keys {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px 40px;
+  }
+  .key h3 {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 14px;
+    font-size: 1.05rem; font-weight: 600; margin-bottom: 6px;
+  }
+  .key p { font-size: 0.95rem; color: var(--primary-050); }
+  .keycap {
+    font-family: inherit;
     font-size: 1.5rem;
     line-height: 1;
     background: var(--neutral-000);
@@ -377,65 +425,89 @@
     border-radius: 10px;
     padding: 14px 18px;
     box-shadow: 0 4px 0 var(--neutral-300);
+    transition: transform 120ms var(--ease-quart), box-shadow 120ms var(--ease-quart);
   }
-  .tools .lead h3 code { background: var(--secondary-500); color: var(--primary-900); }
-  @media (max-width: 980px) {
-    .features, .features.tools { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  @media (hover: hover) {
+    .key:hover .keycap { transform: translateY(3px); box-shadow: 0 1px 0 var(--neutral-300); }
   }
-  .feature {
-    position: relative;
-    background: var(--primary-900);
-    border-radius: calc(var(--grid-w) * 0.005385); /* matches .shot/.canvas */
-    padding: 24px;
-  }
-  .feature h3 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
-  .feature p { font-size: 0.9rem; color: var(--primary-050); }
-  kbd {
-    font-family: inherit;
+  kbd { font-family: inherit; }
+  .lead-in kbd, p > kbd {
     background: var(--primary-700);
     border-radius: 5px;
     padding: 1px 7px;
     font-size: 0.85em;
   }
 
-  /* Humans & agents */
-  .duo { max-width: 44em; margin: 0 auto; text-align: center; }
-  .duo > p { color: var(--primary-000); margin-bottom: 16px; }
+  /* Agents: story on the wallpaper, tools in the session window */
+  .duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 48px;
+  }
+  .duo p { color: var(--primary-000); font-size: 0.95rem; max-width: 52ch; }
   .duo strong { color: var(--neutral-000); }
-  .duo .setup { font-size: 0.9rem; color: var(--primary-100); }
-
-  /* The skill, concretely */
+  .window .body { padding: clamp(24px, 4vw, 40px); }
+  .window .body > p { max-width: 62ch; margin-bottom: 16px; }
+  .window .body strong { color: var(--ink); }
+  .window .body a { color: var(--primary-600); }
   code {
     font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
-    background: var(--primary-700);
-    border-radius: 5px;
-    padding: 1px 7px;
     font-size: 0.85em;
   }
-  .duo .features { margin-top: 32px; margin-bottom: 16px; text-align: left; }
+  .toolbox {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px 40px;
+    margin: 28px 0 8px;
+  }
+  .toolgroup h3 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 10px;
+  }
+  .toolgroup > div { margin-top: 16px; }
+  .toolgroup code {
+    color: var(--primary-600);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  .toolgroup p { font-size: 0.85rem; margin-top: 2px; }
+  .window .body > p code {
+    color: var(--primary-600);
+    background: var(--primary-000);
+    border-radius: 5px;
+    padding: 1px 7px;
+  }
+  .setup { font-size: 0.9rem; color: var(--primary-100); max-width: 62ch; margin-top: 24px; }
+  .setup strong { color: var(--neutral-000); }
 
-  /* Install */
-  ol { max-width: 36em; margin: 0 auto; padding: 0; list-style: none; counter-reset: step; }
-  ol li {
+  /* Install: numbered steps inside a window */
+  .steps-window { max-width: 720px; }
+  ol.steps { list-style: none; counter-reset: step; padding: 0; }
+  ol.steps li {
     counter-increment: step;
     position: relative;
     padding: 0 0 24px 56px;
-    color: var(--primary-000);
   }
-  ol li::before {
+  ol.steps li:last-child { padding-bottom: 0; }
+  ol.steps li::before {
     content: counter(step);
     position: absolute;
     left: 0;
-    top: calc(0.8em - 18px); /* center the 36px circle on the first text line */
+    top: calc(0.8em - 18px);
     width: 36px; height: 36px;
     border-radius: 50%;
     background: var(--secondary-500);
-    color: var(--primary-600);
+    color: var(--primary-900);
     font-weight: 600;
     display: flex; align-items: center; justify-content: center;
   }
-  ol li:not(:last-child)::after {
-    /* connector between this circle and the next (4px breathing room each side) */
+  ol.steps li:not(:last-child)::after {
     content: "";
     position: absolute;
     left: 17px;
@@ -445,48 +517,106 @@
     border-radius: 1px;
     background: var(--secondary-500);
   }
-  ol strong { color: var(--neutral-000); }
+  ol.steps strong { color: var(--ink); }
 
+  /* ---------- Footer: the desktop floor ---------- */
   footer {
-    border-top: 1px solid var(--neutral-000);
-    margin: 0 calc(50% - 50vw);
-    /* bottom = 24px + the 25px frame (24px band + 1px hairline) */
-    padding: 24px 24px calc(24px + 25px);
+    margin-top: var(--section-gap);
+    padding: 32px 24px max(32px, env(safe-area-inset-bottom));
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
     text-align: center;
     font-size: 0.85rem;
     color: var(--primary-100);
   }
   footer p + p { margin-top: 6px; }
-  a { color: var(--secondary-500); }
+
+  /* ---------- Reveals (JS only, once, on scroll entry) ---------- */
+  .js .reveal { opacity: 0; transform: translateY(20px); }
+  .js .reveal.in {
+    opacity: 1; transform: none;
+    transition: opacity 600ms var(--ease-quart), transform 600ms var(--ease-quart);
+  }
+  /* grid children stagger in behind their section */
+  .js .reveal .callout, .js .reveal .key, .js .reveal .aux { opacity: 0; transform: translateY(16px); }
+  .js .reveal.in .callout, .js .reveal.in .key, .js .reveal.in .aux {
+    opacity: 1; transform: none;
+    transition: opacity 500ms var(--ease-quart), transform 500ms var(--ease-quart);
+  }
+  .js .reveal.in :is(.callout, .key):nth-child(2) { transition-delay: 60ms; }
+  .js .reveal.in :is(.callout, .key):nth-child(3) { transition-delay: 120ms; }
+  .js .reveal.in :is(.callout, .key):nth-child(4) { transition-delay: 180ms; }
+  .js .reveal.in :is(.callout, .key):nth-child(5) { transition-delay: 240ms; }
+  .js .reveal.in :is(.callout, .key):nth-child(6) { transition-delay: 300ms; }
+  .js .reveal.in :is(.callout, .key):nth-child(7) { transition-delay: 360ms; }
+  .js .reveal.in :is(.callout, .key):nth-child(8) { transition-delay: 420ms; }
+  .js .reveal.in :is(.callout, .key):nth-child(9) { transition-delay: 480ms; }
+  .js .reveal.in .aux-1 { transition-delay: 140ms; }
+  .js .reveal.in .aux-2 { transition-delay: 240ms; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    .mb-menus, .mb-clock, .mb-version { display: none; }
+    .callouts, .keys { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 36px 32px; }
+    .toolbox { grid-template-columns: 1fr; }
+    .duo { grid-template-columns: 1fr; gap: 16px; }
+  }
+  @media (max-width: 560px) {
+    .hero-window { --shot-w: calc(100vw - 32px); }
+    section { padding: 0 20px; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .download { transition: none; }
-    .canvas img { transition: none; }
-    .ticker-track { animation: none; }
-    .ticker { overflow-x: auto; mask-image: none; -webkit-mask-image: none; }
+    .js .reveal, .js .reveal .callout, .js .reveal .key, .js .reveal .aux {
+      opacity: 1; transform: none; transition: none;
+    }
+    .download, .keycap, .mb-download, .callout .num { transition: none; }
+    .replaying .box, .replaying .shaft, .replaying .head,
+    .replaying .chip, .replaying .cnt { animation: none; }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <header>
-    <img class="icon" src="assets/icon.png" alt="" width="64" height="64">
-    <h1>Newspack Shots</h1>
-    <p class="tagline">Every screenshot and screen recording on brand, whether you take it or your AI&nbsp;agent does.</p>
-    <a id="download" class="download" href="https://github.com/thomasguillot/newspack-shots-releases/releases/latest">Download for macOS</a>
-    <p class="requirements">v<span id="version">0.9.0</span> · macOS 26 (Tahoe) or later · Apple Silicon</p>
-  </header>
+<a class="skip" href="#features">Skip to content</a>
 
-  <main>
+<nav class="menubar" aria-label="Site">
+  <div class="mb-left">
+    <span class="mb-app"><img src="assets/icon.png" alt="" width="20" height="20">Newspack Shots</span>
+    <div class="mb-menus">
+      <a href="#features">Features</a>
+      <a href="#shortcuts">Shortcuts</a>
+      <a href="#agents">Agents</a>
+      <a href="#install">Install</a>
+    </div>
+  </div>
+  <div class="mb-right">
+    <span class="mb-version">v<span data-version>1.2.1</span></span>
+    <a class="mb-download" data-dmg href="https://github.com/thomasguillot/newspack-shots-releases/releases/latest">Download</a>
+    <span class="mb-clock" aria-hidden="true">9:41</span>
+  </div>
+</nav>
 
-  <div class="shot" id="shot" title="Replay">
+<header class="hero">
+  <img class="icon" src="assets/icon.png" alt="" width="72" height="72">
+  <h1>Every capture comes out <span class="mark">on&nbsp;brand<span class="frame" aria-hidden="true"></span><span class="dim" aria-hidden="true">333 × 92</span></span></h1>
+  <p class="tagline">Newspack Shots styles every screenshot and screen recording the moment it's taken, whether you press the keys or your AI&nbsp;agent calls the tools.</p>
+  <a class="download" data-dmg href="https://github.com/thomasguillot/newspack-shots-releases/releases/latest">Download for macOS</a>
+  <p class="requirements">v<span data-version>1.2.1</span> · macOS 26 (Tahoe) or later · Apple Silicon</p>
+</header>
+
+<div class="desk reveal">
+  <div class="window aux aux-1" aria-hidden="true">
+    <div class="titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span></div>
+    <div class="aux-canvas"><div class="crop"></div></div>
+  </div>
+  <div class="window aux aux-2" aria-hidden="true">
+    <div class="titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span></div>
+    <div class="aux-canvas"><div class="crop"></div></div>
+  </div>
+  <div class="window hero-window" id="shot" title="Replay the annotations">
+    <div class="titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="title">newspack.com, captured and styled</span></div>
     <div class="canvas">
-      <img src="assets/hero-raw.png" alt="A raw newspack.com screenshot getting the Newspack Shots treatment: Cobalt background, padding, rounded corners, soft shadow">
-      <div class="capture" aria-hidden="true">
-        <div class="select"><span class="size"></span></div>
-        <div class="flash"></div>
-      </div>
-      <div class="spotlayer" aria-hidden="true"><div class="spot"></div></div>
+      <img src="assets/hero-raw.png" alt="A newspack.com screenshot wearing the Newspack Shots treatment: Cobalt background, padding, rounded corners, soft shadow, with an annotation box, an arrow, a caption chip, and numbered counters drawn on top" width="3024" height="1964">
       <div class="anno" aria-hidden="true">
         <svg viewBox="0 0 1512 982" preserveAspectRatio="none">
           <rect class="box" x="133" y="121" width="757" height="294" rx="4" pathLength="100"/>
@@ -500,226 +630,287 @@
       </div>
     </div>
   </div>
+</div>
 
-  <section>
-    <h2>Capture or record. It's already styled.</h2>
-    <p class="lead-in">This is what you get out of the box:</p>
-    <div class="features">
-      <div class="feature">
+<main>
+
+  <section id="features" class="reveal">
+    <p class="eyebrow">Out of the box</p>
+    <h2>Capture or record. Everything arrives finished.</h2>
+    <p class="lead-in">Here's what a single keystroke gets you:</p>
+    <div class="callouts">
+      <div class="callout">
+        <span class="num" aria-hidden="true">1</span>
         <h3>On brand, automatically</h3>
-        <p>Pick a style — five built-ins from light to dark, or create your own. Every shot follows.</p>
+        <p>Pick a style: five built-ins from light to dark, or create your own. Every shot follows.</p>
       </div>
-      <div class="feature">
+      <div class="callout">
+        <span class="num" aria-hidden="true">2</span>
         <h3>Saved before you blink</h3>
         <p>Already a file and on your clipboard before the preview appears. Drag it into Slack.</p>
       </div>
-      <div class="feature">
+      <div class="callout">
+        <span class="num" aria-hidden="true">3</span>
         <h3>Recordings included</h3>
         <p>Screen recordings get the same treatment: a styled 16:9 MP4, clicks rippling, trim built in.</p>
       </div>
-      <div class="feature">
+      <div class="callout">
+        <span class="num" aria-hidden="true">4</span>
         <h3>Style existing files</h3>
         <p>Style an Image…, Style a Video…, and Make a Grid… live in the menu and Finder's Open With.</p>
       </div>
-      <div class="feature">
+      <div class="callout">
+        <span class="num" aria-hidden="true">5</span>
         <h3>Ships with a skill</h3>
         <p>Installs the team screenshot skill for Claude Code and Codex, so your agent knows the house rules.</p>
       </div>
-      <div class="feature">
+      <div class="callout">
+        <span class="num" aria-hidden="true">6</span>
         <h3>Annotate &amp; redact</h3>
         <p>Zoom in tight, then arrows, rectangles, spotlight, counters, captions, and pixelate.</p>
       </div>
     </div>
   </section>
 
-  <hr>
-
-  <section>
-    <h2>Nine keys to know</h2>
-    <p class="lead-in">Hold <kbd>⌃⇧</kbd>, pick a number:</p>
-    <div class="ticker">
-      <div class="ticker-track">
-        <div class="ticker-group">
-      <div class="feature">
-        <h3><kbd>⌃⇧1</kbd> Full screen</h3>
+  <section id="shortcuts" class="reveal">
+    <p class="eyebrow">Nine keys to know</p>
+    <h2>Hold <kbd>⌃⇧</kbd>, pick a number.</h2>
+    <p class="lead-in">Every capture mode lives one keystroke from whatever you're doing.</p>
+    <div class="keys">
+      <div class="key">
+        <h3><kbd class="keycap">⌃⇧1</kbd>Full screen</h3>
         <p>The whole display: desktop icons hidden, wallpaper swapped for the brand background.</p>
       </div>
-      <div class="feature">
-        <h3><kbd>⌃⇧2</kbd> Window</h3>
+      <div class="key">
+        <h3><kbd class="keycap">⌃⇧2</kbd>Window</h3>
         <p>Hover to pick any window, captured with its true macOS corners and its real shadow.</p>
       </div>
-      <div class="feature">
-        <h3><kbd>⌃⇧3</kbd> Region</h3>
+      <div class="key">
+        <h3><kbd class="keycap">⌃⇧3</kbd>Region</h3>
         <p>Drag an exact selection with a pixel-precision magnifier that snaps to screen edges.</p>
       </div>
-      <div class="feature">
-        <h3><kbd>⌃⇧4</kbd> Timed</h3>
+      <div class="key">
+        <h3><kbd class="keycap">⌃⇧4</kbd>Timed</h3>
         <p>Select a region or a window, then a countdown you can pause to stage vanishing UI.</p>
       </div>
-      <div class="feature">
-        <h3><kbd>⌃⇧5</kbd> Scrolling</h3>
+      <div class="key">
+        <h3><kbd class="keycap">⌃⇧5</kbd>Scrolling</h3>
         <p>Scroll through a long page, or let Auto-Scroll drive it, for one tall stitched shot.</p>
       </div>
-      <div class="feature">
-        <h3><kbd>⌃⇧6</kbd> Capture Text</h3>
+      <div class="key">
+        <h3><kbd class="keycap">⌃⇧6</kbd>Capture Text</h3>
         <p>Lift text straight off the screen onto your clipboard. Nothing styled, nothing saved.</p>
       </div>
-      <div class="feature">
-        <h3><kbd>⌃⇧7</kbd> Record Screen</h3>
+      <div class="key">
+        <h3><kbd class="keycap">⌃⇧7</kbd>Record Screen</h3>
         <p>A countdown, then a styled 16:9 clip of your region. Clicks ripple in the brand color.</p>
       </div>
-      <div class="feature">
-        <h3><kbd>Space</kbd> Flip the mode</h3>
+      <div class="key">
+        <h3><kbd class="keycap">Space</kbd>Flip the mode</h3>
         <p>Tap mid-selection to switch between region and window, screenshots and recordings alike.</p>
       </div>
-      <div class="feature">
-        <h3><kbd>⌃⇧0</kbd> All-In-One</h3>
+      <div class="key">
+        <h3><kbd class="keycap">⌃⇧0</kbd>All-In-One</h3>
         <p>A floating toolbar with every capture mode plus Settings, for when the keys escape you.</p>
       </div>
-      </div>
-        <div class="ticker-group" aria-hidden="true">
-      <div class="feature">
-        <h3><kbd>⌃⇧1</kbd> Full screen</h3>
-        <p>The whole display: desktop icons hidden, wallpaper swapped for the brand background.</p>
-      </div>
-      <div class="feature">
-        <h3><kbd>⌃⇧2</kbd> Window</h3>
-        <p>Hover to pick any window, captured with its true macOS corners and its real shadow.</p>
-      </div>
-      <div class="feature">
-        <h3><kbd>⌃⇧3</kbd> Region</h3>
-        <p>Drag an exact selection with a pixel-precision magnifier that snaps to screen edges.</p>
-      </div>
-      <div class="feature">
-        <h3><kbd>⌃⇧4</kbd> Timed</h3>
-        <p>Select a region or a window, then a countdown you can pause to stage vanishing UI.</p>
-      </div>
-      <div class="feature">
-        <h3><kbd>⌃⇧5</kbd> Scrolling</h3>
-        <p>Scroll through a long page, or let Auto-Scroll drive it, for one tall stitched shot.</p>
-      </div>
-      <div class="feature">
-        <h3><kbd>⌃⇧6</kbd> Capture Text</h3>
-        <p>Lift text straight off the screen onto your clipboard. Nothing styled, nothing saved.</p>
-      </div>
-      <div class="feature">
-        <h3><kbd>⌃⇧7</kbd> Record Screen</h3>
-        <p>A countdown, then a styled 16:9 clip of your region. Clicks ripple in the brand color.</p>
-      </div>
-      <div class="feature">
-        <h3><kbd>Space</kbd> Flip the mode</h3>
-        <p>Tap mid-selection to switch between region and window, screenshots and recordings alike.</p>
-      </div>
-      <div class="feature">
-        <h3><kbd>⌃⇧0</kbd> All-In-One</h3>
-        <p>A floating toolbar with every capture mode plus Settings, for when the keys escape you.</p>
-      </div>
-      </div>
-      </div>
-  </section>
-
-  <hr>
-
-  <section>
-    <h2>For humans and agents alike</h2>
-    <div class="duo">
-      <p>Newspack Shots isn't just a screenshot app for people. It's also an MCP server, so the AI agents you work with take screenshots through the <strong>same styling engine you do</strong>.</p>
-      <p>You press <kbd>⌃⇧2</kbd>; your agent calls a tool. The results are <strong>pixel-identical</strong> — in any style you name. Docs, P2 posts, and help pages stay visually consistent no matter who, or what, captured them.</p>
-      <p>It comes with a <strong>skill</strong>: the team's screenshot playbook of canonical capture sizes, the website recipe, and how to annotate. The app installs it for Claude&nbsp;Code and Codex <strong>automatically</strong> and keeps it up to date.</p>
-      <p>These are the MCP tools the app hands your agent:</p>
-      <div class="features tools">
-        <div class="feature lead">
-          <h3><code>newspack-shots</code></h3>
-          <p>The skill and the MCP server share the name.</p>
-        </div>
-        <div class="feature"><h3><code>annotate_image</code></h3><p>Arrows, rectangles, spotlights, counters, caption chips, pixelate.</p></div>
-        <div class="feature"><h3><code>capture_fullscreen</code></h3><p>Styled full-screen shot, saved and ready.</p></div>
-        <div class="feature"><h3><code>capture_region</code></h3><p>An exact pixel region, 3:2 canvas by default.</p></div>
-        <div class="feature"><h3><code>capture_scrolling</code></h3><p>Auto-scrolls a region and stitches it into one tall shot.</p></div>
-        <div class="feature"><h3><code>capture_window</code></h3><p>A named app's window, true corners and shadow — 3:2 on request.</p></div>
-        <div class="feature"><h3><code>compose_grid</code></h3><p>Lays 2 to 12 shots into one styled masonry grid.</p></div>
-        <div class="feature"><h3><code>list_windows</code></h3><p>What's capturable, so agents don't guess window names.</p></div>
-        <div class="feature"><h3><code>read_text</code></h3><p>OCR a screen region to read dialogs and errors. Nothing saved.</p></div>
-        <div class="feature"><h3><code>style_image</code></h3><p>Brands any existing image, the way agents style website captures.</p></div>
-        <div class="feature"><h3><code>style_video</code></h3><p>Brands workflow videos with title cards, captions, and click ripples.</p></div>
-        <div class="feature"><h3><code>video_frames</code></h3><p>Extracts stills from a recording so agents can verify what it shows.</p></div>
-      </div>
-      <p class="setup">No setup: the app installs the skill and registers the MCP server for Claude&nbsp;Code and Codex <strong>on first launch</strong>. Installed an agent later? Open the app's Settings once and it wires itself up. Toggle it in Settings → General. See the <a href="https://github.com/thomasguillot/newspack-shots-releases#for-ai-agents-mcp">README</a> for details.</p>
     </div>
   </section>
 
-  <hr>
-
-  <section>
-    <h2>Install in a minute</h2>
-    <ol>
-      <li><strong>Download</strong> the DMG and drag <strong>Newspack Shots</strong> onto <strong>Applications</strong>.</li>
-      <li>The app is unsigned, so macOS blocks it once: double-click it, click <strong>Done</strong>, then allow it under <strong>System Settings → Privacy&nbsp;&amp;&nbsp;Security → Open Anyway</strong>.</li>
-      <li>Trigger your first capture and grant <strong>Screen Recording</strong>, then quit and relaunch the app once.</li>
-      <li>Working with AI agents? Nothing to do: the app registers the MCP server and installs the team skill for Claude&nbsp;Code and Codex automatically (opt out in Settings → General).</li>
-      <li>That's it. Captures land styled, saved, and on your clipboard.</li>
-    </ol>
+  <section id="agents" class="reveal">
+    <p class="eyebrow">For humans and agents alike</p>
+    <h2>Your agent captures through the same engine.</h2>
+    <p class="lead-in">You press <kbd>⌃⇧2</kbd>; your agent calls a tool. The results are pixel-identical.</p>
+    <div class="duo">
+      <p>Newspack Shots isn't just a screenshot app for people. It's also an <strong>MCP server</strong>, so the AI agents you work with take screenshots through the same styling engine you do, in any style you name. Docs, P2 posts, and help pages stay visually consistent no matter who, or what, captured them.</p>
+      <p>It comes with a <strong>skill</strong>: the team's screenshot playbook of canonical capture sizes, the website recipe, and how to annotate. The app installs it for Claude&nbsp;Code and Codex <strong>automatically</strong> and keeps it up to date.</p>
+    </div>
+    <div class="window">
+      <div class="titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="title">Claude Code · agent session</span></div>
+      <div class="body">
+        <p>The app hands your agent this toolbox, served as <code>newspack-shots</code> (the skill shares the name):</p>
+        <div class="toolbox">
+          <div class="toolgroup">
+            <h3>Capture</h3>
+            <div><code>capture_fullscreen</code><p>Styled full-screen shot, saved and ready.</p></div>
+            <div><code>capture_window</code><p>A named app's window, true corners and shadow; 3:2 on request.</p></div>
+            <div><code>capture_region</code><p>An exact pixel region, 3:2 canvas by default.</p></div>
+            <div><code>capture_scrolling</code><p>Auto-scrolls a region and stitches it into one tall shot.</p></div>
+            <div><code>list_windows</code><p>What's capturable, so agents don't guess window names.</p></div>
+          </div>
+          <div class="toolgroup">
+            <h3>Style &amp; compose</h3>
+            <div><code>style_image</code><p>Brands any existing image, the way agents style website captures.</p></div>
+            <div><code>style_video</code><p>Brands workflow videos with title cards, captions, and click ripples.</p></div>
+            <div><code>compose_grid</code><p>Lays 2 to 12 shots into one styled masonry grid.</p></div>
+          </div>
+          <div class="toolgroup">
+            <h3>Annotate &amp; verify</h3>
+            <div><code>annotate_image</code><p>Arrows, rectangles, spotlights, counters, caption chips, pixelate.</p></div>
+            <div><code>read_text</code><p>OCR a screen region to read dialogs and errors. Nothing saved.</p></div>
+            <div><code>video_frames</code><p>Extracts stills from a recording so agents can verify what it shows.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="setup">No setup: the app installs the skill and registers the MCP server for Claude&nbsp;Code and Codex <strong>on first launch</strong>. Installed an agent later? Open the app's Settings once and it wires itself up. Toggle it in Settings → General. See the <a href="https://github.com/thomasguillot/newspack-shots-releases#for-ai-agents-mcp">README</a> for details.</p>
   </section>
 
-  </main>
+  <section id="install" class="reveal">
+    <p class="eyebrow">Install in a minute</p>
+    <h2>Five steps, one of them Apple's fault.</h2>
+    <p class="lead-in">The app is unsigned (no Apple Developer Program), so macOS asks once. After that it's plain sailing.</p>
+    <div class="window steps-window">
+      <div class="titlebar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="title">Newspack Shots.dmg</span></div>
+      <div class="body">
+        <ol class="steps">
+          <li><strong>Download</strong> the DMG and drag <strong>Newspack Shots</strong> onto <strong>Applications</strong>.</li>
+          <li>macOS blocks the unsigned app once: double-click it, click <strong>Done</strong>, then allow it under <strong>System Settings → Privacy&nbsp;&amp;&nbsp;Security → Open Anyway</strong>.</li>
+          <li>Trigger your first capture and grant <strong>Screen Recording</strong>, then quit and relaunch the app once.</li>
+          <li>Working with AI agents? Nothing to do: the app registers the MCP server and installs the team skill for Claude&nbsp;Code and Codex automatically (opt out in Settings → General).</li>
+          <li>That's it. Captures land styled, saved, and on your clipboard.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
 
-  <footer>
-    <p>Screenshots and recordings never leave your Mac. No cloud, no upload, no analytics.</p>
-    <p>Made for the Newspack team ·
-      <a href="https://github.com/thomasguillot/newspack-shots-releases/releases">All releases &amp; checksums</a> ·
-      <a href="https://github.com/thomasguillot/newspack-shots-releases#readme">README</a>
-    </p>
-  </footer>
+</main>
 
-</div>
+<footer>
+  <p>Screenshots and recordings never leave your Mac. No cloud, no upload, no analytics.</p>
+  <p>Made for the Newspack team ·
+    <a href="https://github.com/thomasguillot/newspack-shots-releases/releases">All releases &amp; checksums</a> ·
+    <a href="https://github.com/thomasguillot/newspack-shots-releases#readme">README</a>
+  </p>
+</footer>
+
 <script>
   fetch("https://api.github.com/repos/thomasguillot/newspack-shots-releases/releases/latest")
     .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
     .then(function (rel) {
       var dmg = (rel.assets || []).find(function (a) { return a.name.endsWith(".dmg"); });
-      if (dmg) document.getElementById("download").href = dmg.browser_download_url;
-      if (rel.tag_name) document.getElementById("version").textContent = rel.tag_name.replace(/^v/, "");
+      if (dmg) document.querySelectorAll("[data-dmg]").forEach(function (a) { a.href = dmg.browser_download_url; });
+      if (rel.tag_name) document.querySelectorAll("[data-version]").forEach(function (s) { s.textContent = rel.tag_name.replace(/^v/, ""); });
     })
     .catch(function () { /* static fallback already in the markup */ });
 
+  /* Reveal windows and sections once, on entry. */
   (function () {
-    var shot = document.getElementById("shot");
-    var img = shot.querySelector("img");
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      shot.classList.add("styled");
+    var els = document.querySelectorAll(".reveal");
+    if (!("IntersectionObserver" in window)) {
+      els.forEach(function (el) { el.classList.add("in"); });
       return;
     }
-    var canvas = shot.querySelector(".canvas");
-    var select = shot.querySelector(".select");
-    var size = shot.querySelector(".size");
-    var timers = [];
-    var sizeLoop = function () {
-      if (shot.classList.contains("styled")) return;
-      var c = canvas.getBoundingClientRect();
-      var s = select.getBoundingClientRect();
-      size.textContent = Math.round(s.width / c.width * 1512) + " × " + Math.round(s.height / c.height * 982);
-      requestAnimationFrame(sizeLoop);
-    };
-    var play = function () {
-      timers.forEach(clearTimeout);
-      shot.classList.remove("selecting", "flashing", "styled", "spotlighting", "counting", "annotating");
-      void shot.offsetWidth; /* commit the raw state before replaying */
-      timers = [
-        setTimeout(function () { shot.classList.add("selecting"); sizeLoop(); }, 450),
-        setTimeout(function () { shot.classList.add("flashing"); }, 2100),
-        setTimeout(function () { shot.classList.add("styled"); }, 2250),
-        setTimeout(function () { shot.classList.add("spotlighting"); }, 3600),
-        setTimeout(function () { shot.classList.add("counting"); }, 4600),
-        setTimeout(function () { shot.classList.add("annotating"); }, 5700),
-        /* the dim lifts once the annotations have played; they persist */
-        setTimeout(function () { shot.classList.remove("spotlighting"); }, 7400)
-      ];
-    };
-    if (img.complete) play();
-    else img.addEventListener("load", play);
-    shot.addEventListener("click", play);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -10% 0px" });
+    els.forEach(function (el) { io.observe(el); });
   })();
 
+  /* The marquee drags itself around the promise, like a real region
+     selection: the frame grows from the top-left corner, the size label
+     rides the bottom-right corner, and its numbers report the rectangle's
+     true size in device pixels at every step. */
+  (function () {
+    var mark = document.querySelector(".mark");
+    var frame = document.querySelector(".mark .frame");
+    var dim = document.querySelector(".mark .dim");
+    if (!mark || !frame || !dim) return;
+    var settle = function () {
+      var r = mark.getBoundingClientRect();
+      dim.textContent = Math.round(r.width) + " × " + Math.round(r.height);
+    };
+    var done = false;
+    window.addEventListener("resize", function () { if (done) settle(); }, { passive: true });
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || !window.requestAnimationFrame) {
+      done = true;
+      settle();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(settle);
+      return;
+    }
+    mark.classList.add("marking");
+    frame.style.width = "0";
+    frame.style.height = "0";
+    dim.style.opacity = "0";
+    var drag = function () {
+      var r = mark.getBoundingClientRect();
+      var duration = 700;
+      var start = null;
+      var ease = function (t) { return 1 - Math.pow(1 - t, 4); }; /* quart out */
+      var step = function (now) {
+        if (start === null) start = now;
+        var p = ease(Math.min((now - start) / duration, 1));
+        frame.style.width = p * 100 + "%";
+        frame.style.height = p * 100 + "%";
+        dim.style.opacity = "1";
+        dim.style.transform = "translate3d(" + -((1 - p) * r.width) + "px, " + -((1 - p) * r.height) + "px, 0)";
+        dim.textContent = Math.round(r.width * p) + " × " + Math.round(r.height * p);
+        if (p < 1) { requestAnimationFrame(step); return; }
+        frame.style.width = "";
+        frame.style.height = "";
+        dim.style.transform = "";
+        mark.classList.remove("marking");
+        done = true;
+        settle();
+      };
+      requestAnimationFrame(step);
+    };
+    var go = function () { setTimeout(drag, 350); };
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(go);
+    else go();
+  })();
+
+  /* Live menu-bar clock (9:41 is the no-JS fallback). */
+  (function () {
+    var clock = document.querySelector(".mb-clock");
+    if (!clock) return;
+    var tick = function () {
+      clock.textContent = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    };
+    tick();
+    setInterval(tick, 15000);
+  })();
+
+  /* Menu-bar scroll spy; at the bottom of the page the last section wins,
+     since a short final section may never reach the observer band. */
+  (function () {
+    var links = document.querySelectorAll(".mb-menus a");
+    var map = {};
+    links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
+    var ids = Object.keys(map);
+    var setCurrent = function (link) {
+      links.forEach(function (a) { a.removeAttribute("aria-current"); });
+      if (link) link.setAttribute("aria-current", "true");
+    };
+    var atBottom = function () {
+      return window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+    };
+    var spy = new IntersectionObserver(function (entries) {
+      if (atBottom()) return;
+      entries.forEach(function (e) {
+        if (e.isIntersecting && map[e.target.id]) setCurrent(map[e.target.id]);
+      });
+    }, { rootMargin: "-40% 0px -55% 0px" });
+    ids.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) spy.observe(el);
+    });
+    window.addEventListener("scroll", function () {
+      if (atBottom()) setCurrent(map[ids[ids.length - 1]]);
+    }, { passive: true });
+  })();
+
+  /* Click the hero window to replay the annotation draw. */
+  (function () {
+    var shot = document.getElementById("shot");
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    shot.addEventListener("click", function () {
+      shot.classList.remove("replaying");
+      void shot.offsetWidth; /* restart the animations */
+      shot.classList.add("replaying");
+    });
+  })();
 </script>
 </body>
 </html>
