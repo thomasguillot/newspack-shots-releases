@@ -1,0 +1,11 @@
+# Never commit dot-directories. These are local tool, editor, and agent
+# working dirs (design tooling, caches, IDE state) and are personal to a
+# machine, not part of the published site.
+.*/
+
+# Exceptions: dot-directories that genuinely belong to this repo.
+!.github/
+!.well-known/
+
+# macOS noise
+.DS_Store
