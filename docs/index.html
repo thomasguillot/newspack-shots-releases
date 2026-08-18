@@ -554,6 +554,8 @@
       <a href="#shortcuts">Shortcuts</a>
       <a href="#agents">Agents</a>
       <a href="#install">Install</a>
+      <a href="style.html">Style</a>
+      <a href="agents.html">Agent guide</a>
     </div>
   </div>
   <div class="mb-right">
@@ -836,7 +838,10 @@
   (function () {
     var links = document.querySelectorAll(".mb-menus a");
     var map = {};
-    links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
+    links.forEach(function (a) {
+      var href = a.getAttribute("href");
+      if (href.charAt(0) === "#") map[href.slice(1)] = a;
+    });
     var ids = Object.keys(map);
     var setCurrent = function (link) {
       links.forEach(function (a) { a.removeAttribute("aria-current"); });
