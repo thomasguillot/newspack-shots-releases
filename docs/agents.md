@@ -17,13 +17,37 @@ Screenshots are taken in a browser you control (Playwright or similar).
 - Viewport: 1512×982, device pixel ratio 2 (output pixels: 3024×1964).
 - Capture the viewport, not the full page, unless a taller crop is the
   point.
-- Before every capture, hide non-content chrome by injecting CSS:
-  scrollbars, cookie banners, dev/debug bars. Baseline:
+- Before any scrolling or capturing, hide non-content chrome by
+  injecting this CSS (the same list the app's team recipe uses:
+  scrollbars, the hosting proxy banner, debug notices, cookie
+  banners, and two admin-bar items that are workstation noise):
 
-      ::-webkit-scrollbar { display: none !important; }
-      html { scrollbar-width: none !important; }
+      ::-webkit-scrollbar { display: none; }
+      * { scrollbar-width: none; }
+      #atomic-proxy-bar, .newspack-notice__is-debug,
+      #cmplz-cookiebanner-container, .cmplz-cookiebanner, #cmplz-manage-consent,
+      #wp-admin-bar-updates, #wp-admin-bar-annotate-ai { display: none !important; }
 
-  plus `display: none` for any site-specific banner selectors you find.
+  plus `display: none` for any other site-specific banner you find.
+- If the page shows the WordPress admin bar, KEEP it: never hide
+  `#wpadminbar` or `#wp-admin-bar-my-account` (a logged-in page
+  without its bar reads as fake). Anonymise the logged-in identity
+  instead, alongside the CSS above:
+
+      document.querySelectorAll('#wpadminbar .display-name')
+        .forEach((el) => { el.textContent = 'James Smith'; });
+      document.querySelectorAll(
+        '#wpadminbar .quicklinks li#wp-admin-bar-my-account.with-avatar > a img'
+      ).forEach((img) => {
+        img.src = 'data:image/svg+xml,' + encodeURIComponent(
+          '<svg xmlns="http://www.w3.org/2000/svg">' +
+          '<rect width="100%" height="100%" fill="#003DA5"/></svg>');
+        img.removeAttribute('srcset');
+      });
+
+  The display name becomes a generic "James Smith" and the avatar a
+  flat Newspack blue square; the bar stays real and nothing needs
+  redacting afterwards.
 - Let fonts and images settle before shooting (wait for network idle
   plus a beat for animations).
 - Save as PNG. This raw capture is what the styling step wants: never
