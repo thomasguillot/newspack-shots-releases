@@ -59,6 +59,12 @@ In Playwright, hand the bytes in and out as base64:
       return btoa(s);
     }, rawPngBase64);
 
+A captured site's Content-Security-Policy (for example `script-src
+'self'`) can block the cross-origin `import()` and the `data:` fetch
+above. Run the styling step on a blank page (`about:blank` or a fresh
+tab), not inside the captured site's own page. The module URL itself is
+CORS-open (`access-control-allow-origin: *` on GitHub Pages).
+
 ## 3. Compose a grid
 
     const { composeGrid } = await import(
@@ -68,14 +74,17 @@ In Playwright, hand the bytes in and out as base64:
 - 2–12 raw images, in reading order. Pass raw captures, never styled
   output.
 - `columns` forces a column count (2–6); omit for the automatic choice.
+- `ratioCanvas: true` expands the canvas to 3:2 with pure extra margins;
+  the grid look itself is unchanged.
+- `scale` behaves as it does for `styleImage`.
 - Tiles scale down to the narrowest source; nothing is upscaled.
 
-## 4. What this is not
+## 4. Fidelity and limits
 
-The output matches the app's Primary Dark style: the shadow tracks the
-app within a channel delta of 1 at 1:1 calibration, and the only
-measured divergence is corner antialiasing. Only the Primary Dark style
-is available here. For other styles, window captures, recordings,
-styled video, or annotations, hand the task to someone running the
-Newspack Shots app:
+The output matches the app's Primary Dark style: flat background and
+image pixels are byte-identical, the shadow ring tracks within a
+channel delta of 2 at 1:1 calibration, and corner antialiasing is the
+only measured divergence. Only the Primary Dark style is available
+here. For other styles, window captures, recordings, styled video, or
+annotations, hand the task to someone running the Newspack Shots app:
 https://thomasguillot.github.io/newspack-shots-releases/

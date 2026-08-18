@@ -24,10 +24,8 @@ const STYLE = {
 };
 // ── end generated ──
 
-// Canvas shadowBlur and CoreGraphics setShadow blur don't share a
-// definition. Checked against the app's ref-styled/ref-grid fixtures via
-// dev/diff.html: at 1 the shadow ring already tracks the app within Δ1;
-// no scaling needed.
+// Canvas shadowBlur and CoreGraphics setShadow blur don't share a definition,
+// but dev/diff.html shows flat background and image pixels byte-identical, the shadow ring within a channel delta of 2 at 1:1, and corner antialiasing as the only real divergence; no scaling needed.
 const SHADOW_CALIBRATION = 1;
 
 const aspectRatio = () => (STYLE.aspectH > 0 ? STYLE.aspectW / STYLE.aspectH : 0);
