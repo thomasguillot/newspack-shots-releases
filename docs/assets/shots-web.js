@@ -25,7 +25,9 @@ const STYLE = {
 // ── end generated ──
 
 // Canvas shadowBlur and CoreGraphics setShadow blur don't share a
-// definition; measured against the app's output via dev/diff.html.
+// definition. Checked against the app's ref-styled/ref-grid fixtures via
+// dev/diff.html: at 1 the shadow ring already tracks the app within Δ1;
+// no scaling needed.
 const SHADOW_CALIBRATION = 1;
 
 const aspectRatio = () => (STYLE.aspectH > 0 ? STYLE.aspectW / STYLE.aspectH : 0);
@@ -114,18 +116,19 @@ function drawTile(ctx, image, rect, k, scale) {
   ctx.restore();
 }
 
-export async function styleImage(input, { scale = 2, ratioCanvas = false } = {}) {
+export async function styleImage(input, { scale = 1, ratioCanvas = false } = {}) {
   const image = await toImageBitmap(input, "styleImage");
   const { canvas: size, frame, k } = layout(image.width, image.height, scale, ratioCanvas);
   const canvas = makeCanvas(size.width, size.height);
   const ctx = canvas.getContext("2d");
+  ctx.imageSmoothingQuality = "high";
   ctx.fillStyle = STYLE.borderColorHex;
   ctx.fillRect(0, 0, size.width, size.height);
   drawTile(ctx, image, frame, k, scale);
   return toPNGBlob(canvas);
 }
 
-export async function composeGrid(inputs, { scale = 2, columns, ratioCanvas = false } = {}) {
+export async function composeGrid(inputs, { scale = 1, columns, ratioCanvas = false } = {}) {
   const g = STYLE.grid;
   if (!Array.isArray(inputs) || inputs.length < g.minImages || inputs.length > g.maxImages) {
     throw new Error(`composeGrid: needs ${g.minImages}-${g.maxImages} images, got ${Array.isArray(inputs) ? inputs.length : typeof inputs}`);
@@ -172,6 +175,7 @@ export async function composeGrid(inputs, { scale = 2, columns, ratioCanvas = fa
 
   const canvas = makeCanvas(size.width, size.height);
   const ctx = canvas.getContext("2d");
+  ctx.imageSmoothingQuality = "high";
   ctx.fillStyle = STYLE.borderColorHex;
   ctx.fillRect(0, 0, size.width, size.height);
   images.forEach((image, i) => drawTile(ctx, image, frames[i], k, scale));
