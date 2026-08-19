@@ -20,15 +20,22 @@ Screenshots are taken in a browser you control (Playwright or similar).
 - Before any scrolling or capturing, hide non-content chrome by
   injecting this CSS (the same list the app's team recipe uses:
   scrollbars, the hosting proxy banner, debug notices, cookie
-  banners, and two admin-bar items that are workstation noise):
+  banners, and the admin-bar items that are workstation noise rather
+  than product):
 
       ::-webkit-scrollbar { display: none; }
       * { scrollbar-width: none; }
       #atomic-proxy-bar, .newspack-notice__is-debug,
       #cmplz-cookiebanner-container, .cmplz-cookiebanner, #cmplz-manage-consent,
-      #wp-admin-bar-updates, #wp-admin-bar-annotate-ai { display: none !important; }
+      #wp-admin-bar-updates, #wp-admin-bar-annotate-ai, #wp-admin-bar-stats,
+      #wp-admin-bar-reader, #wp-admin-bar-debug-bar,
+      #wp-admin-bar-password_protected, #wp-admin-bar-campaigns_preview_toggle,
+      #wp-admin-bar-np-manager-admin-bar-menu,
+      #wp-admin-bar-woocommerce-site-visibility-badge,
+      #wp-admin-bar-wpseo-menu { display: none !important; }
 
-  plus `display: none` for any other site-specific banner you find.
+  plus `display: none` for any other site-specific banner or noisy
+  admin-bar item you find.
 - If the page shows the WordPress admin bar, KEEP it: never hide
   `#wpadminbar` or `#wp-admin-bar-my-account` (a logged-in page
   without its bar reads as fake). Anonymise the logged-in identity
