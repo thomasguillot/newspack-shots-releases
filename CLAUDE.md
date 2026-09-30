@@ -1,6 +1,6 @@
 # Newspack Shots — Downloads
 
-This repo hosts only the GitHub Pages download site (`docs/index.html`, a single self-contained page) and the README for Newspack Shots releases. The app's source lives in a private repository.
+This repo hosts only the download site (`docs/`, published to Spacefast at https://newspack-shots.view.fast/; `docs/index.html` is a single self-contained page) and the README for Newspack Shots releases. The app's source lives in a private repository.
 
 ## Design Context
 

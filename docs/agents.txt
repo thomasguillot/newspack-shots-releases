@@ -66,7 +66,7 @@ Fetch the module from this site and call it inside any browser page you
 control:
 
     const { styleImage } = await import(
-      "https://thomasguillot.github.io/newspack-shots-releases/assets/shots-web.js");
+      "https://newspack-shots.view.fast/assets/shots-web.js");
     const styled = await styleImage(rawBlob);
 
 - `rawBlob`: your raw capture as a Blob/File or ImageBitmap.
@@ -83,7 +83,7 @@ In Playwright, hand the bytes in and out as base64:
     const styledB64 = await page.evaluate(async (rawB64) => {
       const raw = await fetch(`data:image/png;base64,${rawB64}`).then(r => r.blob());
       const { styleImage } = await import(
-        "https://thomasguillot.github.io/newspack-shots-releases/assets/shots-web.js");
+        "https://newspack-shots.view.fast/assets/shots-web.js");
       const blob = await styleImage(raw);
       const buf = new Uint8Array(await blob.arrayBuffer());
       let s = ""; buf.forEach(b => s += String.fromCharCode(b));
@@ -94,12 +94,12 @@ A captured site's Content-Security-Policy (for example `script-src
 'self'`) can block the cross-origin `import()` and the `data:` fetch
 above. Run the styling step on a blank page (`about:blank` or a fresh
 tab), not inside the captured site's own page. The module URL itself is
-CORS-open (`access-control-allow-origin: *` on GitHub Pages).
+CORS-open (`access-control-allow-origin: *`).
 
 ## 3. Compose a grid
 
     const { composeGrid } = await import(
-      "https://thomasguillot.github.io/newspack-shots-releases/assets/shots-web.js");
+      "https://newspack-shots.view.fast/assets/shots-web.js");
     const grid = await composeGrid([rawA, rawB, rawC]);
 
 - 2–12 raw images, in reading order. Pass raw captures, never styled
@@ -118,4 +118,4 @@ channel delta of 2 at 1:1 calibration, and corner antialiasing is the
 only measured divergence. Only the Primary Dark style is available
 here. For other styles, window captures, recordings, styled video, or
 annotations, hand the task to someone running the Newspack Shots app:
-https://thomasguillot.github.io/newspack-shots-releases/
+https://newspack-shots.view.fast/
